@@ -1,0 +1,7 @@
+/ACE_Side-scrolling/bin/
+/ACE_Side-scrolling/obj/
+*.XML
+*.DLL
+*.xml
+*.dll
+*.png
