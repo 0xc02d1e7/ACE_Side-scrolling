@@ -1,7 +1,6 @@
 /ACE_Side-scrolling/bin/
 /ACE_Side-scrolling/obj/
-*.XML
-*.DLL
-*.xml
-*.dll
+*.[xX][mM][lL]
+*.[dD][lL][lL]
 *.png
+*.suo

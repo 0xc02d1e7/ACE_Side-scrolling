@@ -9,7 +9,8 @@ namespace ACE_Side_scrolling
     public class Player : ace.TextureObject2D
     {
         int count = 0, anime = 0, status = 0;
-        int Vspeed = 0;
+        float Vspeed = 0;
+        bool Xjump;
         ace.Texture2D[] bouningen = new ace.Texture2D[6];
         ace.Vector2DF pos;
 
@@ -37,8 +38,6 @@ namespace ACE_Side_scrolling
                     if (count % 4 == 0) anime++;
                     pos.X--;
                     TurnLR = false;
-
-
                 }
                 if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Right) == ace.KeyState.Hold)
                 {
@@ -47,43 +46,46 @@ namespace ACE_Side_scrolling
                     TurnLR = true;
                 }
 
-                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Up) == ace.KeyState.Hold)
+                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Up) == ace.KeyState.Push)
                 {
                     status = 1;
                     anime = 0;
+                    Vspeed = 4.0f;
+
+                    if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Left) == ace.KeyState.Hold && !TurnLR) Xjump = true;
+                    else if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Right) == ace.KeyState.Hold && TurnLR) Xjump = true;
+                    else Xjump = false;
+                }
+            }
+
+            if (status == 1)
+            {
+                if (Xjump)
+                {
+                    if (TurnLR) pos.X++;
+                    else pos.X--;
+
+                    if (Vspeed > 2.0f) Texture = bouningen[0];
+                    else if (Vspeed > 0.0f) Texture = bouningen[1];
+                    else if (Vspeed > -2.0f) Texture = bouningen[2];
+                    else Texture = bouningen[3];
+                }
+                else
+                {
                     Texture = bouningen[4];
                 }
             }
-            else if (status == 1 && count % 5 == 0)
-            {
-                status = 2;
-                Vspeed = 10;
-                Texture = bouningen[5];
-            }
 
-            if (status == 2)
+            if (pos.Y > 240.0f && Vspeed < 0.0f)
             {
-                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Left) == ace.KeyState.Hold && TurnLR == false)
-                {
-                    pos.X--;
-                }
-                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Left) == ace.KeyState.Hold && TurnLR == true)
-                {
-                    pos.X++;
-                }
-            }
-
-            if (pos.Y > 240.0 && Vspeed < 0)//床に触っているかの判定で置き換える
-            {
+                Vspeed = 0.0f;
                 status = 0;
-                Vspeed = 0;
             }
             else
             {
                 pos.Y -= Vspeed;
-                Vspeed -= 1;
+                Vspeed-=0.2f;
             }
-
             Position = pos;
             count++;
 
