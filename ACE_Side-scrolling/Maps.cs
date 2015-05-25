@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,21 @@ namespace ACE_Side_scrolling
 {
     class Maps : ace.MapObject2D
     {
-        int length;
+        int length=int.MaxValue;
         string[] data = new string[15];
+
         public Maps(int len)
         {
 
-            ace.Texture2D chip_texture = ace.Engine.Graphics.CreateTexture2D("Resources/block.png");
-
-            length = len;
-
-            for (int i = 0; i < length; i++)
+            StreamReader reader = new StreamReader("Maps/01.txt", Encoding.Unicode);
+            for (int i = 0; i < 15;i++ )
             {
-                for (int j = 0; j < 480 / 32; j++) data[j] = "00000000000000000000000000000000000";
+                data[i] = reader.ReadLine();
+                length = Math.Min(length, data[i].Length);
             }
-            data[12] = "11111111111111111111111111111111111";
+            reader.Close();
 
+            ace.Texture2D chip_texture = ace.Engine.Graphics.CreateTexture2D("Resources/block.png");
             for (int i = 0; i < length; i++)
             {
                 for (int j = 0; j < 480 / 32; j++)
