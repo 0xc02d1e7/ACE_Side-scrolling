@@ -14,19 +14,32 @@ namespace ACE_Side_scrolling
             // AC-Engineを初期化する。
             ace.Engine.Initialize("Empty", 640, 480, new ace.EngineOption());
 
-            ace.Scene scene =new ace.Scene();
+            ace.Scene scene = new ace.Scene();
 
-            ace.Layer2D layer=new ace.Layer2D();
+            ace.Layer2D layer = new ace.Layer2D();
             Player player = new Player();
             layer.DrawingPriority = 2;
             layer.AddObject(player);
             scene.AddLayer(layer);
 
+
+            ace.Layer2D blocklayer = new ace.Layer2D();
+            blocklayer.DrawingPriority = 1;
+            scene.AddLayer(blocklayer);
+            Maps map = new Maps(30);
+            blocklayer.AddObject(map);
+
             ace.Layer2D backlayer = new ace.Layer2D();
             ace.TextureObject2D back = new ace.TextureObject2D();
+            backlayer.DrawingPriority = 0;
             back.Texture = ace.Engine.Graphics.CreateTexture2D("Resources/back.png");
             backlayer.AddObject(back);
             scene.AddLayer(backlayer);
+
+            ace.CameraObject2D camera = new ace.CameraObject2D();
+            camera.Dst = new ace.RectI(0, 0, 640, 480);
+            camera.Src = new ace.RectI(0, 0, 640, 480);
+            layer.AddObject(camera);
 
             ace.Engine.ChangeScene(scene);
 
