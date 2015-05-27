@@ -13,8 +13,9 @@ namespace ACE_Side_scrolling
         bool Xjump;
         ace.Texture2D[] bouningen = new ace.Texture2D[6];
         ace.Vector2DF pos;
+        Maps map;
 
-        public Player()
+        public Player(Maps _map)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -26,6 +27,7 @@ namespace ACE_Side_scrolling
             }
             Texture = bouningen[0];
             Position = pos = new ace.Vector2DF(320.0f, 240.0f);
+            map = _map;
         }
 
         protected override void OnUpdate()
@@ -76,7 +78,7 @@ namespace ACE_Side_scrolling
                 }
             }
 
-            if (pos.Y > 240.0f && Vspeed < 0.0f)
+            if (!IsEnterable() && Vspeed < 0.0f)
             {
                 Vspeed = 0.0f;
                 status = 0;
@@ -84,11 +86,17 @@ namespace ACE_Side_scrolling
             else
             {
                 pos.Y -= Vspeed;
-                Vspeed-=0.2f;
+                Vspeed -= 0.2f;
             }
             Position = pos;
             count++;
 
+        }
+        public bool IsEnterable()
+        {
+            int x = ((int)pos.X + 16) / 32;
+            int y = (int)pos.Y / 32 + 1;
+            return !(map.data[y][x] == '1');
         }
     }
 }

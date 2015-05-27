@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ACE_Side_scrolling
 {
-    class Maps : ace.MapObject2D
+    public class Maps : ace.MapObject2D
     {
         int length=int.MaxValue;
-        string[] data = new string[15];
+        public string[] data = new string[15];
 
         public Maps(int len)
         {
