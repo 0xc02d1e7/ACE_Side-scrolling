@@ -6,97 +6,100 @@ using System.Threading.Tasks;
 
 namespace ACE_Side_scrolling
 {
+
     public class Player : ace.TextureObject2D
     {
-        int count = 0, anime = 0, status = 0;
-        float Vspeed = 0;
-        bool Xjump;
-        ace.Texture2D[] bouningen = new ace.Texture2D[6];
-        ace.Vector2DF pos;
-        Maps map;
+        private int anime;
+        private ace.Texture2D[] bouningen = new ace.Texture2D[6];
+
+        private Maps map;
+        private ace.Vector2DF Velocity;
 
         public Player(Maps _map)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 bouningen[i] = ace.Engine.Graphics.CreateTexture2D("Resources/W" + i.ToString() + ".png");
             }
-            for (int i = 0; i < 2; i++)
-            {
-                bouningen[i + 4] = ace.Engine.Graphics.CreateTexture2D("Resources/J" + i.ToString() + ".png");
-            }
             Texture = bouningen[0];
-            Position = pos = new ace.Vector2DF(320.0f, 240.0f);
+            Position = new ace.Vector2DF(320.0f, 240.0f);
             map = _map;
+            anime = 0;
+            Velocity = new ace.Vector2DF(0.0f, 0.0f);
+            CenterPosition = new ace.Vector2DF(12, 16);
         }
 
         protected override void OnUpdate()
         {
-            if (status == 0)
+            //if (Velocity.Y == 0.0f)//浮遊中でなければX軸方向に移動できる。
+            if (Velocity.Y == 0.0f)
             {
-                Texture = bouningen[anime % 4];
-                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Left) == ace.KeyState.Hold)
-                {
-                    if (count % 4 == 0) anime++;
-                    pos.X--;
-                    TurnLR = false;
-                }
-                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Right) == ace.KeyState.Hold)
-                {
-                    if (count % 4 == 0) anime++;
-                    pos.X++;
-                    TurnLR = true;
-                }
-
-                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Up) == ace.KeyState.Push)
-                {
-                    status = 1;
-                    anime = 0;
-                    Vspeed = 4.0f;
-
-                    if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Left) == ace.KeyState.Hold && !TurnLR) Xjump = true;
-                    else if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Right) == ace.KeyState.Hold && TurnLR) Xjump = true;
-                    else Xjump = false;
-                }
-            }
-
-            if (status == 1)
-            {
-                if (Xjump)
-                {
-                    if (TurnLR) pos.X++;
-                    else pos.X--;
-
-                    if (Vspeed > 2.0f) Texture = bouningen[0];
-                    else if (Vspeed > 0.0f) Texture = bouningen[1];
-                    else if (Vspeed > -2.0f) Texture = bouningen[2];
-                    else Texture = bouningen[3];
-                }
-                else
+                Velocity.X = 0.0f;
+                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Up) == ace.KeyState.Hold)
                 {
                     Texture = bouningen[4];
                 }
-            }
+                else
+                {
+                    if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Left) == ace.KeyState.Hold)
+                    {
+                        anime++;
+                        Velocity.X = -1.0f;
+                        TurnLR = false;
+                    }
+                    if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Right) == ace.KeyState.Hold)
+                    {
+                        anime++;
+                        Velocity.X = 1.0f;
+                        TurnLR = true;
+                    }
+                    Texture = bouningen[(anime / 5) % 4];
+                    Velocity.Y = 0.2f;//落下しようとしてみる。
+                }
 
-            if (!IsEnterable() && Vspeed < 0.0f)
-            {
-                Vspeed = 0.0f;
-                status = 0;
+                if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Up) == ace.KeyState.Release)
+                {
+                    Velocity.Y = -4.0f;
+                    anime = 0;
+                }
+
             }
             else
             {
-                pos.Y -= Vspeed;
-                Vspeed -= 0.2f;
+                Velocity.Y = Math.Min(Velocity.Y+0.2f, 4.0f);
+                Texture = bouningen[5];
             }
-            Position = pos;
-            count++;
 
+            RegulateVelocity();
+            Position += Velocity;
         }
-        public bool IsEnterable()
+
+        private void RegulateVelocity()//そのまま突き進んでも壁に当たらないよう速度を調整する
         {
-            int x = ((int)pos.X + 16) / 32;
-            int y = (int)pos.Y / 32 + 1;
-            return !(map.data[y][x] == '1');
+            ace.Vector2DF ExpectedPosition = Position+Velocity;
+
+            if (Velocity.Y > 0.0)//下方向
+            {
+                ace.Vector2DI cell = new ace.Vector2DI((int)ExpectedPosition.X / 16, (int)(ExpectedPosition.Y + 16.0f) / 16);
+                if (map.data[cell.Y][cell.X] == '1') Velocity.Y = 0.0f;
+            }
+            else if (Velocity.Y < 0.0)//上方向
+            {
+                ace.Vector2DI cell = new ace.Vector2DI((int)ExpectedPosition.X / 16, (int)(ExpectedPosition.Y - 16.0f) / 16);
+                if (map.data[cell.Y][cell.X] == '1') Velocity.Y = 0.0f;
+            }
+
+            if (Velocity.X < 0.0)//左方向
+            {
+                ace.Vector2DI cell = new ace.Vector2DI((int)(ExpectedPosition.X - 6.0f) / 16, (int)ExpectedPosition.Y / 16);
+                if (map.data[cell.Y][cell.X] == '1') Velocity.X = 0.0f;
+            }
+            else if (Velocity.X > 0.0)//右方向
+            {
+                ace.Vector2DI cell = new ace.Vector2DI((int)(ExpectedPosition.X + 12.0f) / 16, (int)ExpectedPosition.Y / 16);
+                if (map.data[cell.Y][cell.X] == '1') Velocity.X = 0.0f;
+            }
+
         }
     }
 }

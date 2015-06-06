@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using ace;
+
 namespace ACE_Side_scrolling
 {
     class Program
@@ -12,8 +14,8 @@ namespace ACE_Side_scrolling
         static void Main(string[] args)
         {
             // AC-Engineを初期化する。
-            ace.Engine.Initialize("Empty", 640, 480, new ace.EngineOption());
-
+            Engine.Initialize("Empty", 640, 480, new ace.EngineOption());
+            
             ace.Scene scene = new ace.Scene();
 
             ace.Layer2D backlayer = new ace.Layer2D();
