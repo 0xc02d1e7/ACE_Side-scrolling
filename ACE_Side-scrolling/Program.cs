@@ -8,6 +8,29 @@ using ace;
 
 namespace ACE_Side_scrolling
 {
+    class FPSViewer : ace.TextObject2D
+    {
+        protected override void OnUpdate()
+        {
+            Text = ace.Engine.CurrentFPS.ToString() + "FPS";
+            Position = new Vector2DF(0.0f, 0.0f);
+        }
+    }
+
+    class Camera : ace.CameraObject2D
+    {
+        ace.Object2D Target;
+        public Camera(ace.Object2D target)
+        {
+            Target=target;
+            Dst = new ace.RectI(0, 0, 640, 480);
+        }
+        protected override void OnUpdate()
+        {
+            Src = new ace.RectI((int)Target.Position.X - 320, 0, 640, 480);
+        }
+    }
+
     class Program
     {
         [STAThread]
@@ -15,7 +38,7 @@ namespace ACE_Side_scrolling
         {
             // AC-Engineを初期化する。
             Engine.Initialize("Empty", 640, 480, new ace.EngineOption());
-            
+
             ace.Scene scene = new ace.Scene();
 
             ace.Layer2D backlayer = new ace.Layer2D();
@@ -37,12 +60,14 @@ namespace ACE_Side_scrolling
             layer.AddObject(player);
             scene.AddLayer(layer);
 
-            /*
-            ace.CameraObject2D camera = new ace.CameraObject2D();
-            camera.Dst = new ace.RectI(0, 0, 640, 480);
-            camera.Src = new ace.RectI(0, 0, 640, 480);
-            layer.AddObject(camera);
-            */
+            FPSViewer fps = new FPSViewer();
+            layer.AddObject(fps);
+
+
+            Camera C = new Camera(player);
+            layer.AddObject(C);
+            C = new Camera(player);
+            blocklayer.AddObject(C);
 
             ace.Engine.ChangeScene(scene);
 
