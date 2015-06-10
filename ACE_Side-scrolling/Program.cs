@@ -64,10 +64,10 @@ namespace ACE_Side_scrolling
             layer.AddObject(fps);
 
 
-            Camera C = new Camera(player);
-            layer.AddObject(C);
-            C = new Camera(player);
-            blocklayer.AddObject(C);
+            Camera Cam = new Camera(player);
+            layer.AddObject(Cam);
+            Cam = new Camera(player);
+            blocklayer.AddObject(Cam);
 
             ace.Engine.ChangeScene(scene);
 
