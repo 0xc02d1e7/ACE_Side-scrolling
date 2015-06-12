@@ -10,10 +10,14 @@ namespace ACE_Side_scrolling
 {
     class FPSViewer : ace.TextObject2D
     {
+        public FPSViewer()
+        {
+            Font = ace.Engine.Graphics.CreateFont("Resources/FPS_font.aff");
+            Position = new Vector2DF(0.0f, 0.0f);
+        }
         protected override void OnUpdate()
         {
             Text = ace.Engine.CurrentFPS.ToString() + "FPS";
-            Position = new Vector2DF(0.0f, 0.0f);
         }
     }
 
@@ -22,7 +26,7 @@ namespace ACE_Side_scrolling
         ace.Object2D Target;
         public Camera(ace.Object2D target)
         {
-            Target=target;
+            Target = target;
             Dst = new ace.RectI(0, 0, 640, 480);
         }
         protected override void OnUpdate()
@@ -60,11 +64,16 @@ namespace ACE_Side_scrolling
             layer.AddObject(player);
             scene.AddLayer(layer);
 
+            ace.Layer2D UIlayer = new ace.Layer2D();
+            UIlayer.DrawingPriority = 3;
+            scene.AddLayer(UIlayer);
+
             FPSViewer fps = new FPSViewer();
-            layer.AddObject(fps);
+            UIlayer.AddObject(fps);
 
 
-            Camera Cam = new Camera(player);
+            Camera Cam;
+            Cam = new Camera(player);
             layer.AddObject(Cam);
             Cam = new Camera(player);
             blocklayer.AddObject(Cam);

@@ -33,8 +33,7 @@ namespace ACE_Side_scrolling
             Chips['ブ'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/block.png"), true);
             Chips['上'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/ビル上.png"), true);
             Chips['中'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/ビル中.png"), true);
-            Chips['下'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/ビル下.png"), true);
-            //Chips['中'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/block.png"), true);
+            Chips['下'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/ビル下.png"), false);
 
             StreamReader reader = new StreamReader("Maps/01.txt", Encoding.Unicode);
             for (int i = 0; i < 480 / 32; i++)
