@@ -19,24 +19,18 @@ namespace ACE_Side_scrolling
         {
             for (int i = 0; i < 6; i++)
             {
-                Bouningen[i] = ace.Engine.Graphics.CreateTexture2D("Resources/W" + i.ToString() + ".png");
+                Bouningen[i] = ace.Engine.Graphics.CreateTexture2D("Resources/Characters/W" + i.ToString() + ".png");
             }
             Texture = Bouningen[0];
             Anime = 0;
-            Position = new ace.Vector2DF(300.0f, 240.0f);
+            Position = new ace.Vector2DF(300.0f, 100.0f);
             VSpeed = 0.0f;
             VMove = false;
             Map = _map;
         }
 
-        private ace.Vector2DI ConvertPos(ace.Vector2DF pos)
-        {
-            return new ace.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
-        }
-
         protected override void OnUpdate()
         {
-            ace.Vector2DI Pos = ConvertPos(Position);
             if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Left) == ace.KeyState.Hold)//左移動
             {
                 if (!Map.Isblocked(Position + new ace.Vector2DF(-2.0f, 0.0f) + new ace.Vector2DF(5.0f, 0.0f)) &&
@@ -94,7 +88,6 @@ namespace ACE_Side_scrolling
 
             if (VMove) Anime = 0;
             Texture = (VMove ? Bouningen[5] : Bouningen[(Anime / 4) % 4]);
-            Console.WriteLine(VSpeed);
         }
     }
 }

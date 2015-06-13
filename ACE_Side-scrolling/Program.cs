@@ -60,8 +60,10 @@ namespace ACE_Side_scrolling
 
             ace.Layer2D layer = new ace.Layer2D();
             Player player = new Player(map);
+            Enemy train1 = new Enemy("Resources/Characters/train.png", new ace.Vector2DF(22.0f * 32.0f, 100.0f), map);
             layer.DrawingPriority = 2;
             layer.AddObject(player);
+            layer.AddObject(train1);
             scene.AddLayer(layer);
 
             ace.Layer2D UIlayer = new ace.Layer2D();

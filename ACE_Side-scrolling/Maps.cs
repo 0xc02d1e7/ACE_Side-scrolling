@@ -13,9 +13,9 @@ namespace ACE_Side_scrolling
         public ace.Texture2D Texture;
         public bool IsBlock;
 
-        public MapChips(ace.Texture2D texture, bool isblock)
+        public MapChips(string path, bool isblock)
         {
-            Texture = texture;
+            Texture = ace.Engine.Graphics.CreateTexture2D(path);
             IsBlock = isblock;
         }
     }
@@ -29,13 +29,23 @@ namespace ACE_Side_scrolling
         public Maps(int len)
         {
             Chips = new Dictionary<char, MapChips>();
-            Chips['　'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("esources/block.png"), false);
-            Chips['ブ'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/block.png"), true);
-            Chips['上'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/ビル上.png"), true);
-            Chips['中'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/ビル中.png"), true);
-            Chips['下'] = new MapChips(ace.Engine.Graphics.CreateTexture2D("Resources/ビル下.png"), false);
+
+            IEnumerable<string> ChipList;
+            ChipList = Directory.EnumerateFiles("Resources/Block/", "?.png");
+            foreach (string C in ChipList)
+            {
+                Chips.Add(C.Substring(16)[0], new MapChips(C, true));
+            }
+
+            ChipList = Directory.EnumerateFiles("Resources/Enterable/", "?.png");
+            foreach (string C in ChipList)
+            {
+                Chips.Add(C.Substring(20)[0], new MapChips(C, false));
+            }
+
 
             StreamReader reader = new StreamReader("Maps/01.txt", Encoding.Unicode);
+
             for (int i = 0; i < 480 / 32; i++)
             {
                 Data[i] = reader.ReadLine();
