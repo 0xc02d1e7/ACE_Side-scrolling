@@ -1,3 +1,3 @@
 # ACE_Side-scrolling
-ACEで横スクロールアクションを作ってみるテスト
+~~ACE~~[Altseed](http://github.com/Altseed/Altseed)で横スクロールアクションを作ってみるテスト
 
