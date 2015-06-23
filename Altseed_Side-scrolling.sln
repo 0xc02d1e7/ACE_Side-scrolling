@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACE_Side-scrolling", "ACE_Side-scrolling\ACE_Side-scrolling.csproj", "{15A92E21-8CA1-4E30-ACA4-E75EC86BC6BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altseed_Side-scrolling", "Altseed_Side-scrolling\Altseed_Side-scrolling.csproj", "{15A92E21-8CA1-4E30-ACA4-E75EC86BC6BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

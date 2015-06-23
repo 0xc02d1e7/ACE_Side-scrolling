@@ -7,8 +7,8 @@
     <ProjectGuid>{15A92E21-8CA1-4E30-ACA4-E75EC86BC6BC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACE_Side_scrolling</RootNamespace>
-    <AssemblyName>ACE_Side-scrolling</AssemblyName>
+    <RootNamespace>Altseed_Side_scrolling</RootNamespace>
+    <AssemblyName>Altseed_Side-scrolling</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

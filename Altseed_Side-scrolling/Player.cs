@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACE_Side_scrolling
+namespace Altseed_Side_scrolling
 {
 
     public class Player : Character

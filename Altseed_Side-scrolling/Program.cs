@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using ace;
 
-namespace ACE_Side_scrolling
+namespace Altseed_Side_scrolling
 {
     class FPSViewer : ace.TextObject2D
     {
