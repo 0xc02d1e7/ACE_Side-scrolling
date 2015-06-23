@@ -34,11 +34,13 @@ namespace ACE_Side_scrolling
                 Velocity.X = 2.0f;
             }
             else Velocity.X = 0.0f;
+
             if (ace.Engine.Keyboard.GetKeyState(ace.Keys.Up) == ace.KeyState.Hold && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
             {
                 Velocity.Y = -4.0f;
             }
 
+            base.OnUpdate();
             Move();
 
             if (Math.Abs(Movement.Y) > 0.1f)
@@ -47,6 +49,18 @@ namespace ACE_Side_scrolling
                 Anime = 0;
             }
             else Texture = Bouningen[(Anime / 4) % 4];
+        }
+
+        protected override void OnCollide(Character obj)
+        {
+            Enemy e = obj as Enemy;
+            float dx = Math.Abs(e.Position.X - Position.X);
+            float dy = Math.Abs(e.Position.Y - Position.Y);
+
+            if(e.motal==0)
+            {
+
+            }
         }
     }
 }

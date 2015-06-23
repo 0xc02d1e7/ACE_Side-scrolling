@@ -17,7 +17,7 @@ namespace ACE_Side_scrolling
         }
         protected override void OnUpdate()
         {
-            Text = ace.Engine.CurrentFPS.ToString() + "FPS";
+            Text = ace.Engine.CurrentFPS.ToString("##.#") + "FPS";
         }
     }
 
