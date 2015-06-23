@@ -10,17 +10,17 @@ namespace Altseed_Side_scrolling
 {
     public class MapChips
     {
-        public ace.Texture2D Texture;
+        public asd.Texture2D Texture;
         public bool IsBlock;
 
         public MapChips(string path, bool isblock)
         {
-            Texture = ace.Engine.Graphics.CreateTexture2D(path);
+            Texture = asd.Engine.Graphics.CreateTexture2D(path);
             IsBlock = isblock;
         }
     }
 
-    public class Maps : ace.MapObject2D
+    public class Maps : asd.MapObject2D
     {
         public int Length = int.MaxValue;
         public string[] Data = new string[30];
@@ -57,17 +57,18 @@ namespace Altseed_Side_scrolling
             {
                 for (int j = 0; j < 480 / 32; j++)
                 {
-                    ace.Chip2D chip = ace.Engine.Graphics.CreateChip2D();
+                    asd.Chip2D chip = new asd.Chip2D();
                     chip.Texture = Chips[Data[j][i]].Texture;
-                    chip.Src = new ace.RectF(i * 32.0f, j * 32.0f, 32.0f, 32.0f);
+                    chip.Position = new asd.Vector2DF(i * 32.0f, j * 32.0f);
+
                     AddChip(chip);
                 }
             }
         }
 
-        public bool Isblocked(ace.Vector2DF pos)
+        public bool Isblocked(asd.Vector2DF pos)
         {
-            ace.Vector2DI Cell = new ace.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
+            asd.Vector2DI Cell = new asd.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
             return Chips[Data[Cell.Y][Cell.X]].IsBlock;
         }
     }
