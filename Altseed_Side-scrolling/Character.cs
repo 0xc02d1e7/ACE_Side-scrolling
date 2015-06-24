@@ -8,7 +8,7 @@ namespace Altseed_Side_scrolling
 {
     public class Character : asd.TextureObject2D
     {
-        protected asd.Vector2DF Velocity;
+        public asd.Vector2DF Velocity;
         protected asd.Vector2DF Movement;
         protected float Width, Height;
         protected int Anime;
@@ -28,10 +28,12 @@ namespace Altseed_Side_scrolling
             IEnumerable<asd.Object2D> enemies = this.Layer.Objects;
             foreach (asd.Object2D obj in enemies)
             {
-                if ((obj as Character) == null || obj==this) continue;
-                if (IsCollide(obj as Character))
+                if ((obj as Character) == null || obj == this) continue;
+                asd.Vector2DF d;
+                d=IsCollide(obj as Character);
+                if (d.Y > 0.0f)
                 {
-                    OnCollide(obj as Character);
+                    OnCollide(obj as Character,d);
                 }
 
             }
@@ -43,7 +45,7 @@ namespace Altseed_Side_scrolling
             if (Velocity.X < 0.0f)//左移動
             {
                 if (!Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, -Height / 2.0f)) &&
-                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f-1.0f)))
+                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f - 1.0f)))
                 {
                     Position += new asd.Vector2DF(Velocity.X, 0.0f);
                     Movement += new asd.Vector2DF(Velocity.X, 0.0f);
@@ -53,8 +55,8 @@ namespace Altseed_Side_scrolling
             }
             else if (Velocity.X > 0.0f)//右移動
             {
-                if (!Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(Width / 2.0f, -Height / 2.0f )) &&
-                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(Width / 2.0f, Height / 2.0f-1.0f)))
+                if (!Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(Width / 2.0f, -Height / 2.0f)) &&
+                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(Width / 2.0f, Height / 2.0f - 1.0f)))
                 {
                     Position += new asd.Vector2DF(Velocity.X, 0.0f);
                     Movement += new asd.Vector2DF(Velocity.X, 0.0f);
@@ -65,7 +67,7 @@ namespace Altseed_Side_scrolling
 
             if (Velocity.Y < 0.0f)//上昇中
             {
-                if (!Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(-Width / 2.0f, -Height / 2.0f )) &&
+                if (!Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(-Width / 2.0f, -Height / 2.0f)) &&
                    !Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(Width / 2.0f, -Height / 2.0f)))
                 {
                     Position += new asd.Vector2DF(0.0f, Velocity.Y);
@@ -95,20 +97,23 @@ namespace Altseed_Side_scrolling
                 }
             }
         }
-        
-        protected bool IsCollide(Character obj)
+
+        //めり込んだ量を返す
+        protected asd.Vector2DF IsCollide(Character obj)
         {
-            if((Math.Abs(Position.X-obj.Position.X)<(Width+obj.Width)/2.0f))
+            float dx = (Width + obj.Width) / 2.0f - Math.Abs(Position.X - obj.Position.X);
+            if (dx > 0.0f)
             {
-                if((Math.Abs(Position.Y-obj.Position.Y)<(Height+obj.Height)/2.0f))
+                float dy = (Height + obj.Height) / 2.0f - Math.Abs(Position.Y - obj.Position.Y);
+                if (dy >0.0f)
                 {
-                    return true;
+                    return new asd.Vector2DF(dx, dy);
                 }
             }
-            return false;
+            return new asd.Vector2DF(-1.0f, -1.0f);
         }
 
-        protected virtual void OnCollide(Character obj)
+        protected virtual void OnCollide(Character obj,asd.Vector2DF d)
         {
 
         }

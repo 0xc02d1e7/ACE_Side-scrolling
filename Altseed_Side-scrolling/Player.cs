@@ -40,8 +40,8 @@ namespace Altseed_Side_scrolling
                 Velocity.Y = -4.0f;
             }
 
-            base.OnUpdate();
             Move();
+            base.OnUpdate();
 
             if (Math.Abs(Movement.Y) > 0.1f)
             {
@@ -51,16 +51,18 @@ namespace Altseed_Side_scrolling
             else Texture = Bouningen[(Anime / 4) % 4];
         }
 
-        protected override void OnCollide(Character obj)
+        protected override void OnCollide(Character obj, asd.Vector2DF d)
         {
+            System.Console.WriteLine("coll!");
             Enemy e = obj as Enemy;
-            float dx = Math.Abs(e.Position.X - Position.X);
-            float dy = Math.Abs(e.Position.Y - Position.Y);
 
-            if(e.motal==0)
-            {
-
-            }
+            if (d.X > d.Y)
+                if (e.motal == 0)
+                {
+                    Position += new asd.Vector2DF(obj.Velocity.X, -d.Y + 1.0f);
+                    Movement.Y = 0.0f;
+                    Velocity.Y = 0.0f;
+                }
         }
     }
 }
