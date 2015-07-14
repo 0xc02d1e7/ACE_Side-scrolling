@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Altseed_Side_scrolling
 {
-    public class Character : asd.TextureObject2D
+    public abstract class Character : asd.TextureObject2D
     {
         public asd.Vector2DF Velocity;
         protected asd.Vector2DF Movement;
@@ -25,18 +25,30 @@ namespace Altseed_Side_scrolling
 
         protected override void OnUpdate()
         {
+            //敵との衝突検出
             IEnumerable<asd.Object2D> enemies = this.Layer.Objects;
             foreach (asd.Object2D obj in enemies)
             {
                 if ((obj as Character) == null || obj == this) continue;
                 asd.Vector2DF d;
-                d=IsCollide(obj as Character);
+                d = IsCollide((Character)obj);
                 if (d.Y > 0.0f)
                 {
-                    OnCollide(obj as Character,d);
+                    OnCollide((Character)obj, d);
                 }
-
             }
+            //ブロックとの衝突
+            foreach (var chip in Map.Blocks)
+            {
+                //if ((chip as asd.Chip2D) == null) continue;
+                asd.Vector2DF d;
+                d = IsCollide(chip);
+                if(d.Y>0.0f)
+                {
+                    //OnCollide
+                }
+            }
+
         }
         protected void Move()
         {
@@ -105,7 +117,7 @@ namespace Altseed_Side_scrolling
             if (dx > 0.0f)
             {
                 float dy = (Height + obj.Height) / 2.0f - Math.Abs(Position.Y - obj.Position.Y);
-                if (dy >0.0f)
+                if (dy > 0.0f)
                 {
                     return new asd.Vector2DF(dx, dy);
                 }
@@ -113,7 +125,21 @@ namespace Altseed_Side_scrolling
             return new asd.Vector2DF(-1.0f, -1.0f);
         }
 
-        protected virtual void OnCollide(Character obj,asd.Vector2DF d)
+        protected asd.Vector2DF IsCollide(asd.Chip2D chip)
+        {
+            float dx = (Width + 32.0f) / 2.0f - Math.Abs(Position.X - chip.Position.X);
+            if (dx > 0.0f)
+            {
+                float dy = (Height + 32.0f) / 2.0f - Math.Abs(Position.Y - chip.Position.Y);
+                if (dy > 0.0f)
+                {
+                    return new asd.Vector2DF(dx, dy);
+                }
+            }
+            return new asd.Vector2DF(-1.0f, -1.0f);
+        }
+
+        protected virtual void OnCollide(Character obj, asd.Vector2DF d)
         {
 
         }
