@@ -42,6 +42,8 @@ namespace Altseed_Side_scrolling
             // AC-Engineを初期化する。
             asd.Engine.Initialize("Empty", 640, 480, new asd.EngineOption());
 
+            System.Console.ReadLine();
+
             asd.Scene scene = new asd.Scene();
 
             asd.Layer2D backlayer = new asd.Layer2D();

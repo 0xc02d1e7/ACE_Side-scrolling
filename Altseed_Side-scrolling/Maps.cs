@@ -63,7 +63,7 @@ namespace Altseed_Side_scrolling
                     chip.Position = new asd.Vector2DF(i * 32.0f, j * 32.0f);
                     chip.CenterPosition = new asd.Vector2DF(16.0f, 16.0f);
                     AddChip(chip);
-                    Blocks.Add(chip);
+                    if(Parts[Data[j][i]].IsBlock)Blocks.Add(chip);
 
                 }
             }

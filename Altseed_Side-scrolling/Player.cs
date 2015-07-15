@@ -27,20 +27,19 @@ namespace Altseed_Side_scrolling
         {
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Left) == asd.KeyState.Hold)//左移動
             {
-                Velocity.X = -2.0f;
+                Velocity1.X = -2.0f;
             }
             else if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Hold)//右移動
             {
-                Velocity.X = 2.0f;
+                Velocity1.X = 2.0f;
             }
-            else Velocity.X = 0.0f;
+            else Velocity1.X = 0.0f;
 
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Hold && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Hold /*&& Math.Abs(Movement.Y) < 0.1f*/)//ジャンプ
             {
-                Velocity.Y = -4.0f;
+                Velocity1.Y = -4.0f;
             }
 
-            Move();
             base.OnUpdate();
 
             if (Math.Abs(Movement.Y) > 0.1f)
@@ -49,20 +48,7 @@ namespace Altseed_Side_scrolling
                 Anime = 0;
             }
             else Texture = Bouningen[(Anime / 4) % 4];
-        }
-
-        protected override void OnCollide(Character obj, asd.Vector2DF d)
-        {
-            System.Console.WriteLine("coll!");
-            Enemy e = obj as Enemy;
-
-            if (d.X > d.Y)
-                if (e.motal == 0)
-                {
-                    Position += new asd.Vector2DF(obj.Velocity.X, -d.Y + 1.0f);
-                    Movement.Y = 0.0f;
-                    Velocity.Y = 0.0f;
-                }
+            //System.Console.WriteLine("{0},{1} :{2},{3}", Velocity1.X, Velocity1.Y,Position.X,Position.Y);
         }
     }
 }

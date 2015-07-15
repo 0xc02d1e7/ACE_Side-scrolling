@@ -8,7 +8,7 @@ namespace Altseed_Side_scrolling
 {
     public abstract class Character : asd.TextureObject2D
     {
-        public asd.Vector2DF Velocity;
+        public asd.Vector2DF Velocity1, Velocity2;
         protected asd.Vector2DF Movement;
         protected float Width, Height;
         protected int Anime;
@@ -21,94 +21,47 @@ namespace Altseed_Side_scrolling
             Map = map;
             Position = pos;
             Anime = 0;
+            Velocity1 = new asd.Vector2DF(0.0f, 0.0f);
+            Velocity2 = new asd.Vector2DF(0.0f, 0.0f);
+
         }
 
         protected override void OnUpdate()
         {
-            //敵との衝突検出
-            IEnumerable<asd.Object2D> enemies = this.Layer.Objects;
-            foreach (asd.Object2D obj in enemies)
+            Velocity1.Y = Math.Min(Velocity1.Y+0.5f,4.0f);
+
+            Movement = Velocity1+Velocity2;//結局どれだけ動いたのかが入る
+            asd.Vector2DF PosBuffer = Position;
+            Position += Movement;
+
+            foreach (var block in Map.Blocks)
             {
-                if ((obj as Character) == null || obj == this) continue;
-                asd.Vector2DF d;
-                d = IsCollide((Character)obj);
-                if (d.Y > 0.0f)
+                //if ((block as MapParts) == null) continue;
+                asd.Vector2DF d = IsCollide(block);
+                if(d.X>0.0f)
                 {
-                    OnCollide((Character)obj, d);
+                    Movement.X -= d.X;
                 }
-            }
-            //ブロックとの衝突
-            foreach (var chip in Map.Blocks)
-            {
-                //if ((chip as asd.Chip2D) == null) continue;
-                asd.Vector2DF d;
-                d = IsCollide(chip);
                 if(d.Y>0.0f)
                 {
-                    //OnCollide
+                    Movement.Y -= d.Y;
                 }
             }
+            Anime = 0;
+            Position = PosBuffer + Movement;
+            /*
+            foreach (var enemy in this.Layer.Objects)
+            {
+                if ((enemy as Character) == null || enemy == this) continue;//敵だけ見ればよい
+                asd.Vector2DF d = IsCollide((Character)enemy);
+                if (d.X > 0.0f || d.Y > 0.0f)
+                {
 
+                }
+            }
+            */
         }
-        protected void Move()
-        {
-            Movement = new asd.Vector2DF(0.0f, 0.0f);
 
-            if (Velocity.X < 0.0f)//左移動
-            {
-                if (!Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, -Height / 2.0f)) &&
-                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f - 1.0f)))
-                {
-                    Position += new asd.Vector2DF(Velocity.X, 0.0f);
-                    Movement += new asd.Vector2DF(Velocity.X, 0.0f);
-                    Anime++;
-                    TurnLR = false;
-                }
-            }
-            else if (Velocity.X > 0.0f)//右移動
-            {
-                if (!Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(Width / 2.0f, -Height / 2.0f)) &&
-                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity.X, 0.0f) + new asd.Vector2DF(Width / 2.0f, Height / 2.0f - 1.0f)))
-                {
-                    Position += new asd.Vector2DF(Velocity.X, 0.0f);
-                    Movement += new asd.Vector2DF(Velocity.X, 0.0f);
-                    Anime++;
-                    TurnLR = true;
-                }
-            }
-
-            if (Velocity.Y < 0.0f)//上昇中
-            {
-                if (!Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(-Width / 2.0f, -Height / 2.0f)) &&
-                   !Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(Width / 2.0f, -Height / 2.0f)))
-                {
-                    Position += new asd.Vector2DF(0.0f, Velocity.Y);
-                    Movement += new asd.Vector2DF(0.0f, Velocity.Y);
-                    Velocity.Y += 0.2f;
-                }
-                else Velocity.Y = 0.0f;
-            }
-            else//落下中
-            {
-                if (!Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f - 1.0f)) &&
-                   !Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(Width / 2.0f, Height / 2.0f - 1.0f)))
-                {
-                    Position += new asd.Vector2DF(0.0f, Velocity.Y);
-                    Velocity.Y = Math.Min(4.0f, Velocity.Y + 0.2f);
-                    if (!Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f - 1.0f)) &&
-                   !Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(Width / 2.0f, Height / 2.0f - 1.0f)))
-                    {
-                        Movement += new asd.Vector2DF(0.0f, Velocity.Y);
-                    }
-                }
-                else
-                {
-                    //Velocity.Y = 0.0f;
-                    while (Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f - 1.0f)) ||
-                   Map.Isblocked(Position + new asd.Vector2DF(0.0f, Velocity.Y) + new asd.Vector2DF(Width / 2.0f, Height / 2.0f - 1.0f))) Velocity.Y -= 0.1f;
-                }
-            }
-        }
 
         //めり込んだ量を返す
         protected asd.Vector2DF IsCollide(Character obj)
