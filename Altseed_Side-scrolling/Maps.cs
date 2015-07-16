@@ -25,7 +25,6 @@ namespace Altseed_Side_scrolling
         public int Length = int.MaxValue;
         public string[] Data = new string[30];
         public Dictionary<char, MapParts> Parts;
-        public List<asd.Chip2D> Blocks=new List<asd.Chip2D>();
 
         public Maps(int len)
         {
@@ -63,7 +62,6 @@ namespace Altseed_Side_scrolling
                     chip.Position = new asd.Vector2DF(i * 32.0f, j * 32.0f);
                     chip.CenterPosition = new asd.Vector2DF(16.0f, 16.0f);
                     AddChip(chip);
-                    Blocks.Add(chip);
 
                 }
             }

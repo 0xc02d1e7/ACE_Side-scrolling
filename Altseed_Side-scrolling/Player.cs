@@ -27,20 +27,21 @@ namespace Altseed_Side_scrolling
         {
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Left) == asd.KeyState.Hold)//左移動
             {
-                Velocity.X = -2.0f;
+                Velocity1.X = -2.0f;
+                Anime++;
             }
             else if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Hold)//右移動
             {
-                Velocity.X = 2.0f;
+                Velocity1.X = 2.0f;
+                Anime++;
             }
-            else Velocity.X = 0.0f;
+            else Velocity1.X = 0.0f;
 
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Hold && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
             {
-                Velocity.Y = -4.0f;
+                Velocity1.Y = -4.0f;
             }
 
-            Move();
             base.OnUpdate();
 
             if (Math.Abs(Movement.Y) > 0.1f)
@@ -59,9 +60,11 @@ namespace Altseed_Side_scrolling
             if (d.X > d.Y)
                 if (e.motal == 0)
                 {
-                    Position += new asd.Vector2DF(obj.Velocity.X, -d.Y + 1.0f);
+                    //Position += new asd.Vector2DF(0.0f, -d.Y + 1.0f);
                     Movement.Y = 0.0f;
-                    Velocity.Y = 0.0f;
+                    Velocity2 = obj.Velocity1;
+                    Velocity1.Y = 0.0f;
+
                 }
         }
     }

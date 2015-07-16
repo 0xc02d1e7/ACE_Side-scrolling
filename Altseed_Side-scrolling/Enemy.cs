@@ -13,17 +13,17 @@ namespace Altseed_Side_scrolling
             : base(map, 32.0f, 32.0f, pos)
         {
             Texture = asd.Engine.Graphics.CreateTexture2D(path);
-            Velocity = new asd.Vector2DF(2.0f, 0.0f);
+            Velocity1 = new asd.Vector2DF(2.0f, 0.0f);
             CenterPosition = new asd.Vector2DF( (float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
             motal = 0;
         }
 
         protected override void OnUpdate()
         {
-            Move();
+            base.OnUpdate();
             if (Math.Abs(Movement.X) < 0.1f)
             {
-                Velocity.X *= -1.0f;
+                Velocity1.X *= -1.0f;
             }
         }
     }
