@@ -26,11 +26,11 @@ namespace Altseed_Side_scrolling
         public Camera(asd.Object2D target)
         {
             Target = target;
-            Dst = new asd.RectI(0, 0, 640, 480);
+            Dst = new asd.RectI(0, 0, 800, 480);
         }
         protected override void OnUpdate()
         {
-            Src = new asd.RectI((int)Target.Position.X - 320, 0, 640, 480);
+            Src = new asd.RectI((int)Target.Position.X - 400, 0, 800, 480);
         }
     }
 
@@ -40,47 +40,52 @@ namespace Altseed_Side_scrolling
         static void Main(string[] args)
         {
             // AC-Engineを初期化する。
-            asd.Engine.Initialize("Empty", 640, 480, new asd.EngineOption());
+            asd.Engine.Initialize("Empty", 800,600, new asd.EngineOption());
 
-            asd.Scene scene = new asd.Scene();
 
-            asd.Layer2D backlayer = new asd.Layer2D();
-            asd.TextureObject2D backG = new asd.TextureObject2D();
-            backG.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/back.png");
-            backlayer.DrawingPriority = 0;
-            backlayer.AddObject(backG);
-            scene.AddLayer(backlayer);
+            asd.Scene Stitle=new asd.Scene();
+            asd.TextureObject2D Gtitleback=new asd.TextureObject2D();
+            Gtitleback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/back.png");
 
-            asd.Layer2D blocklayer = new asd.Layer2D();
-            blocklayer.DrawingPriority = 1;
-            scene.AddLayer(blocklayer);
+            asd.Scene Sgame= new asd.Scene();
+
+            asd.Layer2D Lback = new asd.Layer2D();
+            asd.TextureObject2D Gback = new asd.TextureObject2D();
+            Gback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/back.png");
+            Lback.DrawingPriority = 0;
+            Lback.AddObject(Gback);
+            Sgame.AddLayer(Lback);
+
+            asd.Layer2D Lblock = new asd.Layer2D();
+            Lblock.DrawingPriority = 1;
+            Sgame.AddLayer(Lblock);
             Maps map = new Maps(30);
-            blocklayer.AddObject(map);
+            Lblock.AddObject(map);
 
-            asd.Layer2D layer = new asd.Layer2D();
+            asd.Layer2D Lchar = new asd.Layer2D();
             Player player = new Player(map);
             player.DrawingPriority = 65536;
             Enemy train1 = new Enemy("Resources/Characters/train.png", new asd.Vector2DF(22.0f * 32.0f, 100.0f), map);
-            layer.DrawingPriority = 2;
-            layer.AddObject(player);
-            layer.AddObject(train1);
-            scene.AddLayer(layer);
+            Lchar.DrawingPriority = 2;
+            Lchar.AddObject(player);
+            Lchar.AddObject(train1);
+            Sgame.AddLayer(Lchar);
 
-            asd.Layer2D UIlayer = new asd.Layer2D();
-            UIlayer.DrawingPriority = 3;
-            scene.AddLayer(UIlayer);
+            asd.Layer2D Lui = new asd.Layer2D();
+            Lui.DrawingPriority = 3;
+            Sgame.AddLayer(Lui);
 
             FPSViewer fps = new FPSViewer();
-            UIlayer.AddObject(fps);
+            Lui.AddObject(fps);
 
 
             Camera Cam;
             Cam = new Camera(player);
-            layer.AddObject(Cam);
+            Lchar.AddObject(Cam);
             Cam = new Camera(player);
-            blocklayer.AddObject(Cam);
+            Lblock.AddObject(Cam);
 
-            asd.Engine.ChangeScene(scene);
+            asd.Engine.ChangeScene(Sgame);
 
             // AC-Engineが進行可能かチェックする。
             while (asd.Engine.DoEvents())
