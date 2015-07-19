@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace Altseed_Side_scrolling
 {
-    class FPSViewer : asd.TextObject2D
+
+    static public class FontContainer
     {
-        public FPSViewer()
+        static public asd.Font font;
+        static FontContainer()
         {
-            Font = asd.Engine.Graphics.CreateFont("Resources/FPS_font.aff");
-            Position = new asd.Vector2DF(0.0f, 0.0f);
-        }
-        protected override void OnUpdate()
-        {
-            Text = asd.Engine.CurrentFPS.ToString("##.#") + "FPS";
+            //font = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\PixelMplus12-Regular.ttf", 12, new asd.Color(0, 0, 0, 0), 0, new asd.Color(0, 0, 0, 0));
+            font = asd.Engine.Graphics.CreateFont("Resources/FPSfont.aff");
         }
     }
 
@@ -49,7 +47,6 @@ namespace Altseed_Side_scrolling
 
 
             asd.Scene Sgame = new asd.Scene();
-
             asd.Layer2D Lback = new asd.Layer2D();
             asd.TextureObject2D Gback = new asd.TextureObject2D();
             Gback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/back.png");
@@ -80,7 +77,9 @@ namespace Altseed_Side_scrolling
 
             FPSViewer fps = new FPSViewer();
             Lui.AddObject(fps);
-
+            TimeCounter tc = new TimeCounter();
+            Lui.AddObject(tc);
+            tc.Start();
 
             Camera Cam;
             Cam = new Camera(player);
