@@ -40,14 +40,15 @@ namespace Altseed_Side_scrolling
         static void Main(string[] args)
         {
             // AC-Engineを初期化する。
-            asd.Engine.Initialize("Empty", 800,600, new asd.EngineOption());
+            asd.Engine.Initialize("Empty", 800, 600, new asd.EngineOption());
 
 
-            asd.Scene Stitle=new asd.Scene();
-            asd.TextureObject2D Gtitleback=new asd.TextureObject2D();
+            asd.Scene Stitle = new asd.Scene();
+            asd.TextureObject2D Gtitleback = new asd.TextureObject2D();
             Gtitleback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/back.png");
 
-            asd.Scene Sgame= new asd.Scene();
+
+            asd.Scene Sgame = new asd.Scene();
 
             asd.Layer2D Lback = new asd.Layer2D();
             asd.TextureObject2D Gback = new asd.TextureObject2D();
@@ -66,9 +67,11 @@ namespace Altseed_Side_scrolling
             Player player = new Player(map);
             player.DrawingPriority = 65536;
             Enemy train1 = new Enemy("Resources/Characters/train.png", new asd.Vector2DF(22.0f * 32.0f, 100.0f), map);
+            Enemy train2 = new Enemy("Resources/Characters/truck.png", new asd.Vector2DF(10.0f * 32.0f, 100.0f), map);
             Lchar.DrawingPriority = 2;
             Lchar.AddObject(player);
             Lchar.AddObject(train1);
+            Lchar.AddObject(train2);
             Sgame.AddLayer(Lchar);
 
             asd.Layer2D Lui = new asd.Layer2D();
