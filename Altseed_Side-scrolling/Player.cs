@@ -54,18 +54,23 @@ namespace Altseed_Side_scrolling
 
         protected override void OnCollide(Character obj, asd.Vector2DF d)
         {
-            System.Console.WriteLine("coll!");
-            Enemy e = obj as Enemy;
-
+            Enemy e = (Enemy)obj;
+            
             if (d.X > d.Y)
+            {
                 if (e.motal == 0)
                 {
-                    //Position += new asd.Vector2DF(0.0f, -d.Y + 1.0f);
                     Movement.Y = 0.0f;
                     Velocity2 = obj.Velocity1;
                     Velocity1.Y = 0.0f;
-
+                    System.Console.WriteLine("乗車（物理）！");
                 }
+            }
+            else if (d.X < d.Y && d.X>1.0f)
+            {
+                System.Console.WriteLine("死亡！ {0} {1}",d.X,d.Y);
+                
+            }
         }
     }
 }

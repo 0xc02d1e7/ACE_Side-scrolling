@@ -59,6 +59,7 @@ namespace Altseed_Side_scrolling
 
             asd.Layer2D layer = new asd.Layer2D();
             Player player = new Player(map);
+            player.DrawingPriority = 65536;
             Enemy train1 = new Enemy("Resources/Characters/train.png", new asd.Vector2DF(22.0f * 32.0f, 100.0f), map);
             layer.DrawingPriority = 2;
             layer.AddObject(player);
