@@ -10,11 +10,14 @@ namespace Altseed_Side_scrolling
 
     static public class FontContainer
     {
-        static public asd.Font font;
+        static public asd.Font PMP10_20;
+        static public asd.Font PMP12_36;
+
         static FontContainer()
         {
-            //font = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\PixelMplus12-Regular.ttf", 12, new asd.Color(0, 0, 0, 0), 0, new asd.Color(0, 0, 0, 0));
-            font = asd.Engine.Graphics.CreateFont("Resources/FPSfont.aff");
+            PMP10_20 = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus10-Regular.ttf", 20, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP12_36 = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 36, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
+
         }
     }
 
@@ -42,14 +45,22 @@ namespace Altseed_Side_scrolling
 
 
             asd.Scene Stitle = new asd.Scene();
+            asd.Layer2D Ltitle = new asd.Layer2D();
+
             asd.TextureObject2D Gtitleback = new asd.TextureObject2D();
-            Gtitleback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/back.png");
+            Gtitleback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/UI/back.png");
+            asd.TextureObject2D Gtitlelogo = new asd.TextureObject2D();
+            Gtitlelogo.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/UI/logo.png");
+            Gtitlelogo.Position = new asd.Vector2DF((asd.Engine.WindowSize.X - Gtitlelogo.Texture.Size.X) / 2.0f, 50.0f);
+            Ltitle.AddObject(Gtitleback);
+            Ltitle.AddObject(Gtitlelogo);
+            Stitle.AddLayer(Ltitle);
 
 
             asd.Scene Sgame = new asd.Scene();
             asd.Layer2D Lback = new asd.Layer2D();
             asd.TextureObject2D Gback = new asd.TextureObject2D();
-            Gback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/back.png");
+            Gback.Texture = asd.Engine.Graphics.CreateTexture2D("Resources/UI/back.png");
             Lback.DrawingPriority = 0;
             Lback.AddObject(Gback);
             Sgame.AddLayer(Lback);
@@ -87,7 +98,7 @@ namespace Altseed_Side_scrolling
             Cam = new Camera(player);
             Lblock.AddObject(Cam);
 
-            asd.Engine.ChangeScene(Sgame);
+            asd.Engine.ChangeScene(Stitle);
 
             // AC-Engineが進行可能かチェックする。
             while (asd.Engine.DoEvents())
