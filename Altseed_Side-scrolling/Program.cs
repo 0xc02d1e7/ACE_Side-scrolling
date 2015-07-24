@@ -74,7 +74,7 @@ namespace Altseed_Side_scrolling
             asd.Layer2D Lchar = new asd.Layer2D();
             Player player = new Player(map);
             player.DrawingPriority = 65536;
-            Enemy train1 = new Enemy("Resources/Characters/train.png", new asd.Vector2DF(22.0f * 32.0f, 100.0f), map);
+            Enemy train1 = new Enemy("Resources/Characters/trainL.png", new asd.Vector2DF(22.0f * 32.0f, 100.0f), map);
             Enemy train2 = new Enemy("Resources/Characters/truck.png", new asd.Vector2DF(10.0f * 32.0f, 100.0f), map);
             Lchar.DrawingPriority = 2;
             Lchar.AddObject(player);
@@ -98,7 +98,7 @@ namespace Altseed_Side_scrolling
             Cam = new Camera(player);
             Lblock.AddObject(Cam);
 
-            asd.Engine.ChangeScene(Stitle);
+            asd.Engine.ChangeScene(Sgame);
 
             // AC-Engineが進行可能かチェックする。
             while (asd.Engine.DoEvents())

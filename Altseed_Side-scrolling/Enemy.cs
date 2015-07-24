@@ -16,6 +16,8 @@ namespace Altseed_Side_scrolling
             Velocity1 = new asd.Vector2DF(2.0f, 0.0f);
             CenterPosition = new asd.Vector2DF( (float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
             motal = 0;
+            Width = Texture.Size.X;
+            Height = Texture.Size.Y;
         }
 
         protected override void OnUpdate()
