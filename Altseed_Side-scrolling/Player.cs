@@ -12,7 +12,7 @@ namespace Altseed_Side_scrolling
         private asd.Texture2D[] Bouningen = new asd.Texture2D[6];
 
         public Player(Maps _map)
-            : base(_map, 13.0f, 32.0f, new asd.Vector2DF(100.0f, 100.0f))
+            : base(_map, 13.0f, 32.0f, new asd.Vector2DF(0.0f, 100.0f))
         {
             for (int i = 0; i < 6; i++)
             {

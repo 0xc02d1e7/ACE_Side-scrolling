@@ -23,10 +23,10 @@ namespace Altseed_Side_scrolling
     public class Maps : asd.MapObject2D
     {
         public int Length = int.MaxValue;
-        public string[] Data = new string[30];
+        public string[] Data = new string[10];
         public Dictionary<char, MapParts> Parts;
 
-        public Maps(int len)
+        public Maps()
         {
             Parts = new Dictionary<char, MapParts>();
 
@@ -45,7 +45,7 @@ namespace Altseed_Side_scrolling
 
 
             StreamReader reader = new StreamReader("Maps/01.txt", Encoding.Unicode);
-            for (int i = 0; i < 480 / 32; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Data[i] = reader.ReadLine();
                 Length = Math.Min(Length, Data[i].Length);
@@ -55,7 +55,7 @@ namespace Altseed_Side_scrolling
 
             for (int i = 0; i < Length; i++)
             {
-                for (int j = 0; j < 480 / 32; j++)
+                for (int j = 0; j < 10; j++)
                 {
                     asd.Chip2D chip = new asd.Chip2D();
                     chip.Texture = Parts[Data[j][i]].Texture;

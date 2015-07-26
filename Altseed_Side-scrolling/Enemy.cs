@@ -14,7 +14,7 @@ namespace Altseed_Side_scrolling
         {
             Texture = asd.Engine.Graphics.CreateTexture2D(path);
             Velocity1 = new asd.Vector2DF(2.0f, 0.0f);
-            CenterPosition = new asd.Vector2DF( (float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
+            CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
             motal = 0;
             Width = Texture.Size.X;
             Height = Texture.Size.Y;
@@ -27,6 +27,32 @@ namespace Altseed_Side_scrolling
             {
                 Velocity1.X *= -1.0f;
             }
+        }
+    }
+
+    public class FlyingEnemy : asd.TextureObject2D
+    {
+        asd.Object2D Target;
+        public FlyingEnemy(asd.Texture2D texture, asd.Object2D target)
+        {
+            Texture = texture;
+            Position = new asd.Vector2DF(0.0f, 32.0f);
+            Target = target;
+        }
+        protected override void OnUpdate()
+        {
+            if (TurnLR)
+            {
+                Position += new asd.Vector2DF(3.0f, 0.0f);
+                if (Position.X > Target.Position.X + 300) TurnLR = false;
+            }
+            else
+            {
+                Position += new asd.Vector2DF(-3.0f, 0.0f);
+                if (Position.X < Target.Position.X - 332) TurnLR = true;
+
+            }
+
         }
     }
 }
