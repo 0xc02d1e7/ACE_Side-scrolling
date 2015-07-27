@@ -10,7 +10,7 @@ namespace Altseed_Side_scrolling
     {
         public FPSViewer()
         {
-            Font = FontContainer.PMP10_20;
+            Font = FontContainer.PMP10_30;
             Position = new asd.Vector2DF(0.0f, 0.0f);
         }
         protected override void OnUpdate()
@@ -28,7 +28,7 @@ namespace Altseed_Side_scrolling
         {
             time = 0;
             counting = false;
-            Font = FontContainer.PMP10_20;
+            Font = FontContainer.PMP10_30;
             Position = new asd.Vector2DF(300.0f, 0.0f);
         }
 
