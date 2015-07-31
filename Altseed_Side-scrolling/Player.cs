@@ -57,8 +57,9 @@ namespace Altseed_Side_scrolling
             }
             else
             {
+                if (KillFlag == 0) Sound.SEPlay(1);
                 Texture = Bouningen[6];
-                Position += new asd.Vector2DF((TurnLR ? 3.0f : -3.0f), (KillFlag-30)/5);
+                Position += new asd.Vector2DF((TurnLR ? -2.0f : 2.0f), (KillFlag - 30) / 5);
                 KillFlag++;
             }
         }
@@ -74,14 +75,19 @@ namespace Altseed_Side_scrolling
                     Movement.Y = 0.0f;
                     Velocity2 = obj.Velocity1;
                     Velocity1.Y = 0.0f;
-                    System.Console.WriteLine("乗車（物理）！");
                 }
             }
             else if (d.X < d.Y && d.X > 1.0f)
             {
-                KillFlag = 1;
-                TurnLR = !(e.Position.X > this.Position.X);
+                KillFlag = 0;
+                TurnLR = (e.Position.X > this.Position.X);
             }
+        }
+
+        protected override void OnCollide(EnemyBullet obj)
+        {
+            KillFlag = 0;
+            TurnLR = (obj.Position.X > this.Position.X);
         }
     }
 }

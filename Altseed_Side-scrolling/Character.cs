@@ -86,12 +86,22 @@ namespace Altseed_Side_scrolling
             IEnumerable<asd.Object2D> enemies = this.Layer.Objects;
             foreach (asd.Object2D obj in enemies)
             {
-                if ((obj as Character) == null || obj == this) continue;
-                asd.Vector2DF d;
-                d = IsCollide((Character)obj);
-                if (d.Y > 0.0f)
+                if(obj == this) continue;
+                if ((obj as Character) != null)
                 {
-                    OnCollide((Character)obj, d);
+                    asd.Vector2DF d;
+                    d = IsCollide((Character)obj);
+                    if (d.Y > 0.0f)
+                    {
+                        OnCollide((Character)obj, d);
+                    }
+                }
+                else if((obj as EnemyBullet)!=null)
+                {
+                    if(IsCollide((EnemyBullet)obj))
+                    {
+                        OnCollide((EnemyBullet)obj);
+                    }
                 }
             }
         }
@@ -111,7 +121,21 @@ namespace Altseed_Side_scrolling
             return new asd.Vector2DF(-1.0f, -1.0f);
         }
 
+        protected bool IsCollide(EnemyBullet obj)
+        {
+            float Radius2 = (Width > Height ? Height : Width)+6;
+            Radius2 *=Radius2;
+
+            if ((Position - obj.Position).SquaredLength < Radius2) return true;
+            return false;
+        }
+
         protected virtual void OnCollide(Character obj, asd.Vector2DF d)
+        {
+
+        }
+
+        protected virtual void OnCollide(EnemyBullet obj)
         {
 
         }
