@@ -42,7 +42,7 @@ namespace Altseed_Side_scrolling
         public Background(int size)
         {
             Texture = asd.Engine.Graphics.CreateTexture2D("Resources/UI/back.png");
-            int length = (int)(size / 0.8f / Texture.Size.X)+4;
+            int length = (int)(size / 0.8f / Texture.Size.X) + 4;
             Chip = new asd.Chip2D[length];
             for (int i = 0; i < length; i++)
             {
@@ -92,12 +92,6 @@ namespace Altseed_Side_scrolling
 
             asd.Scene Sgame = new asd.Scene();
 
-            asd.SoundSource bgm0 = asd.Engine.Sound.CreateSoundSource("Resources/Sound/bgm0.ogg", false);
-            bgm0.IsLoopingMode = true;
-            bgm0.LoopEndPoint=89.298f;
-            bgm0.LoopEndPoint = 167.441f;
-            int id_bgm0 = asd.Engine.Sound.Play(bgm0);
-
             asd.Layer2D Lblock = new asd.Layer2D();
             Lblock.DrawingPriority = 1;
             Sgame.AddLayer(Lblock);
@@ -118,7 +112,7 @@ namespace Altseed_Side_scrolling
             Sgame.AddLayer(Lchar);
 
             asd.Layer2D Lback = new asd.Layer2D();
-            Background Gbacks = new Background(map.Length*32);
+            Background Gbacks = new Background(map.Length * 32);
             Lback.DrawingPriority = 0;
             Lback.AddObject(Gbacks);
             Sgame.AddLayer(Lback);
@@ -144,6 +138,7 @@ namespace Altseed_Side_scrolling
 
 
             asd.Engine.ChangeScene(Sgame);
+            Sound.BGMStart();
 
             // AC-Engineが進行可能かチェックする。
             while (asd.Engine.DoEvents())

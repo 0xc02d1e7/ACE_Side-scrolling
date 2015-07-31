@@ -33,24 +33,48 @@ namespace Altseed_Side_scrolling
     public class FlyingEnemy : asd.TextureObject2D
     {
         asd.Object2D Target;
+        int Shoot, Interval;
+        asd.Texture2D BulletTexture;
         public FlyingEnemy(asd.Texture2D texture, asd.Object2D target)
         {
             Texture = texture;
             Position = new asd.Vector2DF(0.0f, 32.0f);
+            CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
+            BulletTexture = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/enemybullet.png");
             Target = target;
+            Shoot = 0;
+            Interval = 20;
         }
         protected override void OnUpdate()
         {
             if (TurnLR)
             {
                 Position += new asd.Vector2DF(3.0f, 0.0f);
-                if (Position.X > Target.Position.X + 300) TurnLR = false;
+                if (Position.X > Target.Position.X + 300)
+                {
+                    TurnLR = false;
+                    Shoot = 200;
+                }
             }
             else
             {
                 Position += new asd.Vector2DF(-3.0f, 0.0f);
-                if (Position.X < Target.Position.X - 332) TurnLR = true;
+                if (Position.X < Target.Position.X - 332)
+                {
+                    TurnLR = true;
+                    Shoot = 200;
+                }
+            }
 
+            //if(Math.Abs(Position.X-Target.Position.Y)<200)
+            {
+                Shoot--;
+                if (Shoot % Interval == 0)
+                {
+                    asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
+                    EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3,Target);
+                    this.Layer.AddObject(blt);
+                }
             }
 
         }
@@ -58,15 +82,28 @@ namespace Altseed_Side_scrolling
     public class EnemyBullet : asd.TextureObject2D
     {
         asd.Vector2DF Velocity;
-        public EnemyBullet(asd.Vector2DF pos,asd.Vector2DF velocity)
+        asd.Object2D Target;
+        public EnemyBullet(asd.Texture2D texture, asd.Vector2DF pos, asd.Vector2DF velocity,asd.Object2D target)
         {
-            Texture = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/enemybullet.png");
+            Texture = texture;
             Velocity = velocity;
+            Position = pos;
+            Target = target;
+            Angle = velocity.Degree;
+            CenterPosition = new asd.Vector2DF(Texture.Size.X / 2, Texture.Size.Y / 2);
         }
 
         protected override void OnUpdate()
         {
             base.OnUpdate();
+            Position += Velocity;
+            asd.Vector2DF pos = Position - Target.Position;
+            if (Math.Abs(pos.X) > 250 || Math.Abs(pos.Y) > 170)
+            {
+                //this.Destroy();
+                Vanish();
+                //this.Layer.RemoveObject(this);
+            }
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Altseed_Side_scrolling
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Push && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
             {
                 Velocity1.Y = -4.0f;
+                Sound.SEPlay(0);
             }
 
             base.OnUpdate();
