@@ -9,54 +9,64 @@ namespace Altseed_Side_scrolling
 
     public class Player : Character
     {
-        private asd.Texture2D[] Bouningen = new asd.Texture2D[6];
+        private asd.Texture2D[] Bouningen = new asd.Texture2D[7];
+        public int KillFlag;
 
         public Player(Maps _map)
             : base(_map, 13.0f, 32.0f, new asd.Vector2DF(256.0f, 100.0f))
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 Bouningen[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/W" + i.ToString() + ".png");
             }
             Texture = Bouningen[0];
             CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
-
+            KillFlag = -1;
         }
 
         protected override void OnUpdate()
         {
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Left) == asd.KeyState.Hold)//左移動
+            if (KillFlag == -1)
             {
-                Velocity1.X = -2.0f;
-                Anime++;
-            }
-            else if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Hold)//右移動
-            {
-                Velocity1.X = 2.0f;
-                Anime++;
-            }
-            else Velocity1.X = 0.0f;
+                if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Left) == asd.KeyState.Hold)//左移動
+                {
+                    Velocity1.X = -2.0f;
+                    Anime++;
+                }
+                else if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Hold)//右移動
+                {
+                    Velocity1.X = 2.0f;
+                    Anime++;
+                }
+                else Velocity1.X = 0.0f;
 
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Push && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
-            {
-                Velocity1.Y = -4.0f;
-                Sound.SEPlay(0);
-            }
+                if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Push && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
+                {
+                    Velocity1.Y = -4.0f;
+                    Sound.SEPlay(0);
+                }
 
-            base.OnUpdate();
+                base.OnUpdate();
 
-            if (Math.Abs(Movement.Y) > 0.1f)
-            {
-                Texture = Bouningen[5];
-                Anime = 0;
+                if (Math.Abs(Movement.Y) > 0.1f)
+                {
+                    Texture = Bouningen[5];
+                    Anime = 0;
+                }
+                else Texture = Bouningen[(Anime / 4) % 4];
             }
-            else Texture = Bouningen[(Anime / 4) % 4];
+            else
+            {
+                Texture = Bouningen[6];
+                Position += new asd.Vector2DF((TurnLR ? 3.0f : -3.0f), (KillFlag-30)/5);
+                KillFlag++;
+            }
         }
 
         protected override void OnCollide(Character obj, asd.Vector2DF d)
         {
             Enemy e = (Enemy)obj;
-            
+
             if (d.X > d.Y)
             {
                 if (e.motal == 0)
@@ -67,10 +77,10 @@ namespace Altseed_Side_scrolling
                     System.Console.WriteLine("乗車（物理）！");
                 }
             }
-            else if (d.X < d.Y && d.X>1.0f)
+            else if (d.X < d.Y && d.X > 1.0f)
             {
-                System.Console.WriteLine("死亡！ {0} {1}",d.X,d.Y);
-                
+                KillFlag = 1;
+                TurnLR = !(e.Position.X > this.Position.X);
             }
         }
     }
