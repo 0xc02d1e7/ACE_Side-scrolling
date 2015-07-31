@@ -70,6 +70,7 @@ namespace Altseed_Side_scrolling
         public bool Isblocked(asd.Vector2DF pos)
         {
             asd.Vector2DI Cell = new asd.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
+            if (Cell.X < 0 || Cell.Y < 0 || Cell.X >= Length || Cell.Y >= 10) return true;
             return Parts[Data[Cell.Y][Cell.X]].IsBlock;
         }
     }

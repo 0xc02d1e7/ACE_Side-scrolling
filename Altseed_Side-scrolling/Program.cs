@@ -103,7 +103,7 @@ namespace Altseed_Side_scrolling
             player.DrawingPriority = 65536;
             Enemy train1 = new Enemy("Resources/Characters/trainL.png", new asd.Vector2DF(22.0f * 32.0f, 0.0f), map);
             Enemy train2 = new Enemy("Resources/Characters/truck.png", new asd.Vector2DF(10.0f * 32.0f, 0.0f), map);
-            FlyingEnemy heli = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player);
+            FlyingEnemy heli = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player,map);
             Lchar.DrawingPriority = 2;
             Lchar.AddObject(player);
             Lchar.AddObject(heli);

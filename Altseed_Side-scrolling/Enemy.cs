@@ -9,6 +9,7 @@ namespace Altseed_Side_scrolling
     public class Enemy : Character
     {
         public int motal;
+
         public Enemy(string path, asd.Vector2DF pos, Maps map)
             : base(map, 32.0f, 32.0f, pos)
         {
@@ -35,16 +36,20 @@ namespace Altseed_Side_scrolling
         asd.Object2D Target;
         int Shoot, Interval;
         asd.Texture2D BulletTexture;
-        public FlyingEnemy(asd.Texture2D texture, asd.Object2D target)
+        Maps Map;
+
+        public FlyingEnemy(asd.Texture2D texture, asd.Object2D target, Maps map)
         {
             Texture = texture;
             Position = new asd.Vector2DF(0.0f, 32.0f);
             CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
             BulletTexture = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/enemybullet.png");
             Target = target;
+            Map = map;
             Shoot = 0;
             Interval = 20;
         }
+
         protected override void OnUpdate()
         {
             if (TurnLR)
@@ -53,7 +58,6 @@ namespace Altseed_Side_scrolling
                 if (Position.X > Target.Position.X + 300)
                 {
                     TurnLR = false;
-                    Shoot = 200;
                 }
             }
             else
@@ -62,33 +66,33 @@ namespace Altseed_Side_scrolling
                 if (Position.X < Target.Position.X - 332)
                 {
                     TurnLR = true;
-                    Shoot = 200;
                 }
             }
 
-            //if(Math.Abs(Position.X-Target.Position.Y)<200)
+            Shoot++;
+            if (Shoot % Interval == 0)
             {
-                Shoot--;
-                if (Shoot % Interval == 0)
-                {
-                    asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
-                    EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3,Target);
-                    this.Layer.AddObject(blt);
-                }
+                asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
+                EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3, Target, Map);
+                this.Layer.AddObject(blt);
             }
-
         }
     }
+
     public class EnemyBullet : asd.TextureObject2D
     {
         asd.Vector2DF Velocity;
         asd.Object2D Target;
-        public EnemyBullet(asd.Texture2D texture, asd.Vector2DF pos, asd.Vector2DF velocity,asd.Object2D target)
+        Maps Map;
+
+        public EnemyBullet(asd.Texture2D texture, asd.Vector2DF pos, asd.Vector2DF velocity, asd.Object2D target, Maps map)
         {
             Texture = texture;
-            Velocity = velocity;
             Position = pos;
+            Velocity = velocity;
             Target = target;
+            Map = map;
+
             Angle = velocity.Degree;
             CenterPosition = new asd.Vector2DF(Texture.Size.X / 2, Texture.Size.Y / 2);
         }
@@ -98,11 +102,9 @@ namespace Altseed_Side_scrolling
             base.OnUpdate();
             Position += Velocity;
             asd.Vector2DF pos = Position - Target.Position;
-            if (Math.Abs(pos.X) > 250 || Math.Abs(pos.Y) > 170)
+            if (Math.Abs(pos.X) > 480 || Math.Abs(pos.Y) > 320 || Map.Isblocked(Position))
             {
-                //this.Destroy();
                 Vanish();
-                //this.Layer.RemoveObject(this);
             }
         }
     }
