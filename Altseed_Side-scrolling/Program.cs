@@ -60,7 +60,7 @@ namespace Altseed_Side_scrolling
         public BackgroundCamera(asd.Object2D target)
         {
             Target = target;
-            Dst = new asd.RectI(0, 0, 960, 480);
+            Dst = new asd.RectI(0, 0, 960, 640);
         }
         protected override void OnUpdate()
         {
@@ -92,6 +92,12 @@ namespace Altseed_Side_scrolling
 
             asd.Scene Sgame = new asd.Scene();
 
+            asd.SoundSource bgm0 = asd.Engine.Sound.CreateSoundSource("Resources/Sound/bgm0.ogg", false);
+            bgm0.IsLoopingMode = true;
+            bgm0.LoopEndPoint=89.298f;
+            bgm0.LoopEndPoint = 167.441f;
+            int id_bgm0 = asd.Engine.Sound.Play(bgm0);
+
             asd.Layer2D Lblock = new asd.Layer2D();
             Lblock.DrawingPriority = 1;
             Sgame.AddLayer(Lblock);
@@ -107,8 +113,8 @@ namespace Altseed_Side_scrolling
             Lchar.DrawingPriority = 2;
             Lchar.AddObject(player);
             Lchar.AddObject(heli);
-            //Lchar.AddObject(train1);
-            //Lchar.AddObject(train2);
+            Lchar.AddObject(train1);
+            Lchar.AddObject(train2);
             Sgame.AddLayer(Lchar);
 
             asd.Layer2D Lback = new asd.Layer2D();

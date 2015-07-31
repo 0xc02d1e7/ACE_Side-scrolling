@@ -12,7 +12,7 @@ namespace Altseed_Side_scrolling
         private asd.Texture2D[] Bouningen = new asd.Texture2D[6];
 
         public Player(Maps _map)
-            : base(_map, 13.0f, 32.0f, new asd.Vector2DF(0.0f, 100.0f))
+            : base(_map, 13.0f, 32.0f, new asd.Vector2DF(256.0f, 100.0f))
         {
             for (int i = 0; i < 6; i++)
             {
@@ -37,7 +37,7 @@ namespace Altseed_Side_scrolling
             }
             else Velocity1.X = 0.0f;
 
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Hold && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Up) == asd.KeyState.Push && Math.Abs(Movement.Y) < 0.1f)//ジャンプ
             {
                 Velocity1.Y = -4.0f;
             }

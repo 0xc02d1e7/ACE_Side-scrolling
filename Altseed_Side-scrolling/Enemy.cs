@@ -55,4 +55,18 @@ namespace Altseed_Side_scrolling
 
         }
     }
+    public class EnemyBullet : asd.TextureObject2D
+    {
+        asd.Vector2DF Velocity;
+        public EnemyBullet(asd.Vector2DF pos,asd.Vector2DF velocity)
+        {
+            Texture = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/enemybullet.png");
+            Velocity = velocity;
+        }
+
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+        }
+    }
 }
