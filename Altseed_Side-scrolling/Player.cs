@@ -61,6 +61,7 @@ namespace Altseed_Side_scrolling
                 Texture = Bouningen[6];
                 Position += new asd.Vector2DF((TurnLR ? -2.0f : 2.0f), (KillFlag - 30) / 5);
                 KillFlag++;
+                if (Position.Y > 330) asd.Engine.ChangeScene(new DeadScene());
             }
         }
 

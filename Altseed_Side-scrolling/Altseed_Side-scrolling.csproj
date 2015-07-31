@@ -55,8 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="Scene.cs" />
     <Compile Include="Sound.cs" />
-    <Compile Include="Title.cs" />
     <Compile Include="UI.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Maps.cs" />

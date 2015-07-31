@@ -10,7 +10,7 @@ namespace Altseed_Side_scrolling
     {
         static int playingBGMhandle;
         static asd.SoundSource BGM0;
-        static asd.SoundSource[] SE=new asd.SoundSource[3];
+        static asd.SoundSource[] SE = new asd.SoundSource[3];
         static Sound()
         {
             BGM0 = asd.Engine.Sound.CreateSoundSource("Resources/Sound/bgm0.ogg", false);

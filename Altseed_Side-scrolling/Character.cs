@@ -30,7 +30,7 @@ namespace Altseed_Side_scrolling
             if (Velocity1.X + Velocity2.X < 0.0f)//左移動
             {
                 if (!Map.Isblocked(Position + new asd.Vector2DF(Velocity1.X + Velocity2.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, -Height / 2.0f + 1.0f)) &&
-                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity1.X + Velocity2.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f )))
+                    !Map.Isblocked(Position + new asd.Vector2DF(Velocity1.X + Velocity2.X, 0.0f) + new asd.Vector2DF(-Width / 2.0f, Height / 2.0f)))
                 {
                     Position += new asd.Vector2DF(Velocity1.X + Velocity2.X, 0.0f);
                     Movement += new asd.Vector2DF(Velocity1.X + Velocity2.X, 0.0f);
@@ -86,7 +86,7 @@ namespace Altseed_Side_scrolling
             IEnumerable<asd.Object2D> enemies = this.Layer.Objects;
             foreach (asd.Object2D obj in enemies)
             {
-                if(obj == this) continue;
+                if (obj == this) continue;
                 if ((obj as Character) != null)
                 {
                     asd.Vector2DF d;
@@ -96,9 +96,9 @@ namespace Altseed_Side_scrolling
                         OnCollide((Character)obj, d);
                     }
                 }
-                else if((obj as EnemyBullet)!=null)
+                else if ((obj as EnemyBullet) != null)
                 {
-                    if(IsCollide((EnemyBullet)obj))
+                    if (IsCollide((EnemyBullet)obj))
                     {
                         OnCollide((EnemyBullet)obj);
                     }
@@ -123,8 +123,8 @@ namespace Altseed_Side_scrolling
 
         protected bool IsCollide(EnemyBullet obj)
         {
-            float Radius2 = (Width > Height ? Height : Width)+6;
-            Radius2 *=Radius2;
+            float Radius2 = (Width > Height ? Height : Width) / 2 + 6;
+            Radius2 *= Radius2;
 
             if ((Position - obj.Position).SquaredLength < Radius2) return true;
             return false;
