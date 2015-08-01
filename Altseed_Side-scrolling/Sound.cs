@@ -15,29 +15,34 @@ namespace Altseed_Side_scrolling
         {
             BGM0 = asd.Engine.Sound.CreateSoundSource("Resources/Sound/bgm0.ogg", false);
             BGM0.IsLoopingMode = true;
-            BGM0.LoopEndPoint = 89.298f;
+            BGM0.LoopStartingPoint = 89.298f;
             BGM0.LoopEndPoint = 167.441f;
 
-            SE[0] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/jump.ogg", false);
-            SE[1] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/dead.ogg", false);
-            SE[2] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/clear.ogg", false);
+            SE[0] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/jump.ogg", true);
+            SE[1] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/dead.ogg", true);
+            SE[2] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/clear.ogg", true);
 
         }
 
         static public void BGMStart()
         {
-            playingBGMhandle = asd.Engine.Sound.Play(BGM0);
+            if (asd.Engine.Sound.IsPlaying(playingBGMhandle))
+            {
+                asd.Engine.Sound.Stop(playingBGMhandle);
+            }
+                playingBGMhandle = asd.Engine.Sound.Play(BGM0);
         }
         static public void BGMStop()
         {
             if (asd.Engine.Sound.IsPlaying(playingBGMhandle))
             {
-                asd.Engine.Sound.Stop(playingBGMhandle);
+                asd.Engine.Sound.FadeOut(playingBGMhandle,2.0f);
+                
             }
         }
         static public void SEPlay(int code)
         {
-            playingBGMhandle = asd.Engine.Sound.Play(SE[code]);
+            asd.Engine.Sound.Play(SE[code]);
         }
 
     }

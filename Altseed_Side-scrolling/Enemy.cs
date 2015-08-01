@@ -47,7 +47,7 @@ namespace Altseed_Side_scrolling
             Target = target;
             Map = map;
             Shoot = 0;
-            Interval = 20;
+            Interval = 30;
         }
 
         protected override void OnUpdate()

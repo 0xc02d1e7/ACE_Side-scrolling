@@ -8,13 +8,14 @@ namespace Altseed_Side_scrolling
 {
     static public class FontContainer
     {
-        static public asd.Font PMP10_30;
-        static public asd.Font PMP12_60;
-
+        static public asd.Font PMP10_30B;
+        static public asd.Font PMP12_60B;
+        static public asd.Font PMP12_60W;
         static FontContainer()
         {
-            PMP10_30 = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus10-Regular.ttf", 30, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
-            PMP12_60 = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP10_30B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus10-Regular.ttf", 30, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP12_60B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP12_60W = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(255,255,255, 255), 0, new asd.Color(0, 0, 0, 0));
 
         }
     }
@@ -70,7 +71,7 @@ namespace Altseed_Side_scrolling
     {
         public FPSViewer()
         {
-            Font = FontContainer.PMP10_30;
+            Font = FontContainer.PMP10_30B;
             Position = new asd.Vector2DF(0.0f, 0.0f);
         }
         protected override void OnUpdate()
@@ -88,7 +89,7 @@ namespace Altseed_Side_scrolling
         {
             time = 0;
             counting = false;
-            Font = FontContainer.PMP10_30;
+            Font = FontContainer.PMP10_30B;
             Position = new asd.Vector2DF(300.0f, 0.0f);
         }
 
@@ -110,6 +111,22 @@ namespace Altseed_Side_scrolling
             base.OnUpdate();
             if (counting) time++;
             Text = "TIME: " + (time / 3600).ToString("D2") + ":" + ((time / 60) % 60).ToString("D2") + ":" + (time % 60).ToString("D2");
+        }
+    }
+
+    public class BlinkingText : asd.TextObject2D
+    {
+        private int c;
+        private int Interval;
+        public BlinkingText(int interval)
+        {
+            Interval = interval;
+        }
+        protected override void OnUpdate()
+        {
+            c++;
+            if(c%Interval==0)
+                this.IsDrawn =! this.IsDrawn;
         }
     }
 }

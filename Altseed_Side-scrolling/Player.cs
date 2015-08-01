@@ -54,6 +54,7 @@ namespace Altseed_Side_scrolling
                     Anime = 0;
                 }
                 else Texture = Bouningen[(Anime / 4) % 4];
+                if (Position.Y > 330.0f) KillFlag = 0;
             }
             else
             {
@@ -61,7 +62,7 @@ namespace Altseed_Side_scrolling
                 Texture = Bouningen[6];
                 Position += new asd.Vector2DF((TurnLR ? -2.0f : 2.0f), (KillFlag - 30) / 5);
                 KillFlag++;
-                if (Position.Y > 330) asd.Engine.ChangeScene(new DeadScene());
+                if (Position.Y > 330.0) asd.Engine.ChangeScene(new DeadScene());
             }
         }
 

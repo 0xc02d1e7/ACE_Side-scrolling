@@ -9,7 +9,7 @@ namespace Altseed_Side_scrolling
 {
 
 
-    class Program
+    class Altseed_Side_scrolling_Core
     {
         [STAThread]
         static void Main(string[] args)
@@ -18,7 +18,6 @@ namespace Altseed_Side_scrolling
             asd.Engine.Initialize("Empty", 960, 640, new asd.EngineOption());
 
             asd.Engine.ChangeScene(new TitleScene());
-            Sound.BGMStart();
 
             // AC-Engineが進行可能かチェックする。
             while (asd.Engine.DoEvents())
