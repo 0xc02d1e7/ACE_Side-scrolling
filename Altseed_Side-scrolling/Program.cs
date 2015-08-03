@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace Altseed_Side_scrolling
 {
 
-
-    class Altseed_Side_scrolling_Core
+    public static class Altseed_Side_scrolling_Core
     {
+        public static String Title = "ブツを運ぶやつ";
         [STAThread]
         static void Main(string[] args)
         {
             // AC-Engineを初期化する。
-            asd.Engine.Initialize("Empty", 960, 640, new asd.EngineOption());
+            asd.Engine.Initialize(Title, 960, 640, new asd.EngineOption());
 
             asd.Engine.ChangeScene(new TitleScene());
 
