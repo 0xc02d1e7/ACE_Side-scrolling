@@ -15,7 +15,7 @@ namespace Altseed_Side_scrolling
         {
             PMP10_30B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus10-Regular.ttf", 30, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
             PMP12_60B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
-            PMP12_60W = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(255,255,255, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP12_60W = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(255, 255, 255, 255), 0, new asd.Color(0, 0, 0, 0));
 
         }
     }
@@ -125,8 +125,8 @@ namespace Altseed_Side_scrolling
         protected override void OnUpdate()
         {
             c++;
-            if(c%Interval==0)
-                this.IsDrawn =! this.IsDrawn;
+            if (c % Interval == 0)
+                this.IsDrawn = !this.IsDrawn;
         }
     }
 }

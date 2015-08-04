@@ -10,24 +10,22 @@ namespace Altseed_Side_scrolling
     {
         protected override void OnStart()
         {
-            asd.Layer2D Lblock = new asd.Layer2D();
-            Lblock.DrawingPriority = 1;
-            this.AddLayer(Lblock);
-            Maps map = new Maps();
-            Lblock.AddObject(map);
+            asd.Layer2D Lgame = new asd.Layer2D();
+            Maps map = MapManager.Read("Maps/01.txt");
 
-            asd.Layer2D Lchar = new asd.Layer2D();
+            Lgame.AddObject(map);
+
+
             Player player = new Player(map);
-            player.DrawingPriority = 65536;
-            Enemy train1 = new Enemy("Resources/Characters/trainL.png", new asd.Vector2DF(22.0f * 32.0f, 0.0f), map);
-            Enemy train2 = new Enemy("Resources/Characters/truck.png", new asd.Vector2DF(10.0f * 32.0f, 6 * 32), map);
             FlyingEnemy heli = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, map);
-            Lchar.DrawingPriority = 2;
-            Lchar.AddObject(player);
-            Lchar.AddObject(heli);
-            Lchar.AddObject(train1);
-            Lchar.AddObject(train2);
-            this.AddLayer(Lchar);
+            Lgame.DrawingPriority = 2;
+            Lgame.AddObject(player);
+            Lgame.AddObject(heli);
+            foreach(Enemy e in map.Enemies)
+            {
+                Lgame.AddObject(e);
+            }
+            this.AddLayer(Lgame);
 
             asd.Layer2D Lback = new asd.Layer2D();
             Background Gbacks = new Background(map.Length * 32);
@@ -35,10 +33,10 @@ namespace Altseed_Side_scrolling
             Lback.AddObject(Gbacks);
             this.AddLayer(Lback);
 
+
             asd.Layer2D Lui = new asd.Layer2D();
             Lui.DrawingPriority = 3;
             this.AddLayer(Lui);
-
             FPSViewer fps = new FPSViewer();
             Lui.AddObject(fps);
             TimeCounter tc = new TimeCounter();
@@ -47,9 +45,7 @@ namespace Altseed_Side_scrolling
 
             Camera Cam;
             Cam = new Camera(player);
-            Lchar.AddObject(Cam);
-            Cam = new Camera(player);
-            Lblock.AddObject(Cam);
+            Lgame.AddObject(Cam);
             BackgroundCamera BCam;
             BCam = new BackgroundCamera(player);
             Lback.AddObject(BCam);

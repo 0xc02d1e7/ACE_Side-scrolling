@@ -30,14 +30,14 @@ namespace Altseed_Side_scrolling
             {
                 asd.Engine.Sound.Stop(playingBGMhandle);
             }
-                playingBGMhandle = asd.Engine.Sound.Play(BGM0);
+            playingBGMhandle = asd.Engine.Sound.Play(BGM0);
         }
         static public void BGMStop()
         {
             if (asd.Engine.Sound.IsPlaying(playingBGMhandle))
             {
-                asd.Engine.Sound.FadeOut(playingBGMhandle,2.0f);
-                
+                asd.Engine.Sound.FadeOut(playingBGMhandle, 2.0f);
+
             }
         }
         static public void SEPlay(int code)
