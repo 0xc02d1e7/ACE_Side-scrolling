@@ -49,11 +49,12 @@ namespace Altseed_Side_scrolling
             }
         }
 
-        static public Maps Read(String Filename)
+        static public Maps Read(int stagecode)
         {
             Maps map = new Maps();
+            map.StageCode = stagecode;
 
-            StreamReader reader = new StreamReader(Filename, Encoding.Unicode);
+            StreamReader reader = new StreamReader("Maps/"+stagecode+".txt", Encoding.Unicode);
             for (int i = 0; i < 10; i++)
             {
                 map.Data[i] = reader.ReadLine();
@@ -87,6 +88,7 @@ namespace Altseed_Side_scrolling
 
     public class Maps : asd.MapObject2D
     {
+        public int StageCode;
         public int Length = int.MaxValue;
         public string[] Data = new string[10];
         public List<Enemy> Enemies;

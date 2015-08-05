@@ -8,20 +8,25 @@ namespace Altseed_Side_scrolling
 {
     public class GameScene : asd.Scene
     {
+        protected int StageCode;
+
+        public GameScene(int stagecode)
+        {
+            StageCode = stagecode;
+        }
+
         protected override void OnStart()
         {
             asd.Layer2D Lgame = new asd.Layer2D();
-            Maps map = MapManager.Read("Maps/01.txt");
-
+            Maps map = MapManager.Read(StageCode);
             Lgame.AddObject(map);
-
 
             Player player = new Player(map);
             FlyingEnemy heli = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, map);
             Lgame.DrawingPriority = 2;
             Lgame.AddObject(player);
             Lgame.AddObject(heli);
-            foreach(Enemy e in map.Enemies)
+            foreach (Enemy e in map.Enemies)
             {
                 Lgame.AddObject(e);
             }
@@ -46,6 +51,7 @@ namespace Altseed_Side_scrolling
             Camera Cam;
             Cam = new Camera(player);
             Lgame.AddObject(Cam);
+
             BackgroundCamera BCam;
             BCam = new BackgroundCamera(player);
             Lback.AddObject(BCam);
@@ -56,6 +62,11 @@ namespace Altseed_Side_scrolling
 
     public class DeadScene : asd.Scene
     {
+        protected int StageCode;
+        public DeadScene(int stagecode)
+        {
+            StageCode = stagecode;
+        }
         protected override void OnStart()
         {
             asd.Layer2D Lback = new asd.Layer2D();
@@ -71,8 +82,8 @@ namespace Altseed_Side_scrolling
             Ldead.DrawingPriority = 1;
             asd.TextObject2D Tdead = new asd.TextObject2D();
             Tdead.Font = FontContainer.PMP12_60B;
-            Tdead.Text = "突然の死";
-            asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize("突然の死", asd.WritingDirection.Horizontal);
+            Tdead.Text = "GAME OVER";
+            asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize(Tdead.Text, asd.WritingDirection.Horizontal);
             Tdead.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tdead.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
             Ldead.AddObject(Tdead);
@@ -80,7 +91,7 @@ namespace Altseed_Side_scrolling
             BlinkingText Tpzkts = new BlinkingText(30);
             Tpzkts.Text = "RETRY Z KEY TO START!";
             Tpzkts.Font = FontContainer.PMP10_30B;
-            fsize = FontContainer.PMP10_30B.CalcTextureSize("RETRY Z KEY TO START!", asd.WritingDirection.Horizontal);
+            fsize = FontContainer.PMP10_30B.CalcTextureSize(Tpzkts.Text, asd.WritingDirection.Horizontal);
             Tpzkts.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
             Ldead.AddObject(Tpzkts);
@@ -89,11 +100,10 @@ namespace Altseed_Side_scrolling
             this.AddLayer(Lback);
 
             Sound.BGMStop();
-            System.Console.WriteLine("突然の死");
         }
         protected override void OnUpdated()
         {
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new GameScene());
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(StageCode));
         }
     }
 
@@ -122,7 +132,7 @@ namespace Altseed_Side_scrolling
             BlinkingText Tpzkts = new BlinkingText(30);
             Tpzkts.Text = "PRESS Z KEY TO START!";
             Tpzkts.Font = FontContainer.PMP10_30B;
-            fsize = FontContainer.PMP10_30B.CalcTextureSize("PRESS Z KEY TO START!", asd.WritingDirection.Horizontal);
+            fsize = FontContainer.PMP10_30B.CalcTextureSize(Tpzkts.Text, asd.WritingDirection.Horizontal);
             Tpzkts.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
 
@@ -135,8 +145,51 @@ namespace Altseed_Side_scrolling
 
         protected override void OnUpdated()
         {
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new GameScene());
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(1));
 
+        }
+    }
+
+    public class SplashScene : asd.Scene
+    {
+        protected int Count;
+        protected int StageCode;
+
+        public SplashScene(int stagecode)
+        {
+            StageCode = stagecode;
+        }
+
+        protected override void OnStart()
+        {
+            asd.Layer2D Lback = new asd.Layer2D();
+            Lback.DrawingPriority = 0;
+            Background Gback = new Background(0);
+            Lback.AddObject(Gback);
+            asd.CameraObject2D Camera = new asd.CameraObject2D();
+            Camera.Dst = new asd.RectI(0, 0, 960, 640);
+            Camera.Src = new asd.RectI(0, 0, 480, 320);
+            Lback.AddObject(Camera);
+
+            asd.Layer2D Lsplash = new asd.Layer2D();
+            Lsplash.DrawingPriority = 1;
+            asd.TextObject2D Tsplash = new asd.TextObject2D();
+            Tsplash.Font = FontContainer.PMP12_60B;
+            Tsplash.Text = "STAGE " + StageCode;
+            asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize(Tsplash.Text, asd.WritingDirection.Horizontal);
+            Tsplash.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
+            Tsplash.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
+            Lsplash.AddObject(Tsplash);
+
+            this.AddLayer(Lsplash);
+            this.AddLayer(Lback);
+
+            Count = 0;
+        }
+        protected override void OnUpdated()
+        {
+            Count++;
+            if (Count >= 100) asd.Engine.ChangeScene(new GameScene(StageCode));
         }
     }
 }

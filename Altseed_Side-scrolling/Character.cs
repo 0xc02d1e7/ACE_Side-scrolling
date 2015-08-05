@@ -198,7 +198,7 @@ namespace Altseed_Side_scrolling
                 Texture = Bouningen[6];
                 Position += new asd.Vector2DF((TurnLR ? -2.0f : 2.0f), (KillFlag - 30) / 5);
                 KillFlag++;
-                if (Position.Y > 330.0) asd.Engine.ChangeScene(new DeadScene());
+                if (Position.Y > 330.0) asd.Engine.ChangeScene(new DeadScene(Map.StageCode));
             }
         }
 
@@ -296,10 +296,13 @@ namespace Altseed_Side_scrolling
             Shoot++;
             if (Shoot % Interval == 0)
             {
+                if(TurnLR ^ Position.X>Target.Position.X)
+                {
                 asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
                 EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3, Target, Map);
                 this.Layer.AddObject(blt);
             }
+        }
         }
     }
 
