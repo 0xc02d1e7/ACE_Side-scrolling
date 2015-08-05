@@ -116,7 +116,7 @@ namespace Altseed_Side_scrolling
         public TitleScene()
         {
             Cursor = 1;
-            MaxCount = MapManager.CountMaps();
+            MaxCount = 3;
         }
         protected override void OnStart()
         {

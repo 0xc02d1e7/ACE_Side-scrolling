@@ -131,11 +131,11 @@ namespace Altseed_Side_scrolling
             if (c % Interval == 0)
             {
                 this.IsDrawn = !this.IsDrawn;
-                if(this.IsDrawn)s++;
-                this.Text=(s%2==0?Text1:Text2);
+                if (this.IsDrawn) s++;
+                this.Text = (s % 2 == 0 ? Text1 : Text2);
                 asd.Vector2DI fsize = FontContainer.PMP10_30B.CalcTextureSize(this.Text, asd.WritingDirection.Horizontal);
                 this.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
-                
+
             }
         }
     }

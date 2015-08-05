@@ -8,66 +8,52 @@ using System.Threading.Tasks;
 
 namespace Altseed_Side_scrolling
 {
-    public class MapParts
-    {
-        public asd.Texture2D Texture;
-        public bool IsBlock;
-
-        public MapParts(string path, bool isblock)
-        {
-            Texture = asd.Engine.Graphics.CreateTexture2D(path);
-            IsBlock = isblock;
-        }
-    }
-
     static public class MapManager
     {
-        static public Dictionary<char, MapParts> Parts;
-        static public Dictionary<string, asd.Texture2D> EnemyGraphic;
-
+        static public asd.Texture2D[] Parts;
+        static public asd.Texture2D[] Chars;
         static MapManager()
         {
-            Parts = new Dictionary<char, MapParts>();
-            EnemyGraphic = new Dictionary<string, asd.Texture2D>();
-            IEnumerable<string> Enumerate;
-            Enumerate = Directory.EnumerateFiles("Resources/Block/", "?.png");
-            foreach (string C in Enumerate)
+            Parts = new asd.Texture2D[256];
+            for (int i = 0; i <= 0xFF; i++)
             {
-                Parts.Add(C.Substring(16)[0], new MapParts(C, true));
+                Parts[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Block/" + i.ToString("X2") + ".png");
             }
 
-            Enumerate = Directory.EnumerateFiles("Resources/Enterable/", "?.png");
-            foreach (string C in Enumerate)
+            Chars = new asd.Texture2D[256];
+            for (int i = 0; i < 256; i++)
             {
-                Parts.Add(C.Substring(20)[0], new MapParts(C, false));
-            }
-
-            Enumerate = Directory.EnumerateFiles("Resources/Characters/", "*.png");
-            foreach (string C in Enumerate)
-            {
-                EnemyGraphic.Add(C.Substring(21).Split('.')[0], asd.Engine.Graphics.CreateTexture2D(C));
+                Chars[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/" + i.ToString("X2") + ".png");
+                if (Chars[i] == null) break;
             }
         }
 
         static public Maps Read(int stagecode)
         {
+            System.Globalization.NumberStyles Hex = System.Globalization.NumberStyles.AllowHexSpecifier;
             Maps map = new Maps();
             map.StageCode = stagecode;
 
-            StreamReader reader = new StreamReader("Maps/"+stagecode+".txt", Encoding.Unicode);
+            StreamReader reader = new StreamReader("Maps/" + stagecode + ".txt", Encoding.Unicode);
             for (int i = 0; i < 10; i++)
             {
-                map.Data[i] = reader.ReadLine();
-                map.Length = Math.Min(map.Length, map.Data[i].Length);
+                string strbuf = reader.ReadLine();
+                string[] splited = strbuf.Split(' ');
+                for (int j = 0; j < splited.Length; j++)
+                {
+
+                    map.Data[i, j] = int.Parse(splited[j], Hex);
+                }
+                map.Length = Math.Min(map.Length, splited.Length);
             }
 
-            for (int i = 0; i < map.Length; i++)
+            for (int i = 0; i < 10; i++)
             {
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < map.Length; j++)
                 {
                     asd.Chip2D chip = new asd.Chip2D();
-                    chip.Texture = Parts[map.Data[j][i]].Texture;
-                    chip.Position = new asd.Vector2DF(i * 32.0f, j * 32.0f);
+                    chip.Texture = Parts[map.Data[i, j]];
+                    chip.Position = new asd.Vector2DF(j * 32.0f, i * 32.0f);
                     chip.CenterPosition = new asd.Vector2DF(16.0f, 16.0f);
                     map.AddChip(chip);
                 }
@@ -76,23 +62,13 @@ namespace Altseed_Side_scrolling
             while (reader.Peek() >= 0)
             {
                 String[] Datas = (reader.ReadLine()).Split(' ');
-                int x=int.Parse(Datas[1]), y=int.Parse(Datas[2]);
-                Enemy e = new Enemy(EnemyGraphic[Datas[0]], new asd.Vector2DF(x * 32.0f, y * 32.0f), map);
+                int x = int.Parse(Datas[1]), y = int.Parse(Datas[2]);
+                Enemy e = new Enemy(Chars[int.Parse(Datas[0], Hex)], new asd.Vector2DF(x * 32.0f, y * 32.0f), map);
                 map.Enemies.Add(e);
             }
             reader.Close();
 
             return map;
-        }
-
-        static public int CountMaps()
-        {
-            int count = 1;
-            while (Directory.Exists("Maps/" + count.ToString() + ".txt")) ;
-            {
-                count++;
-            }
-            return count;
         }
     }
 
@@ -100,7 +76,7 @@ namespace Altseed_Side_scrolling
     {
         public int StageCode;
         public int Length = int.MaxValue;
-        public string[] Data = new string[10];
+        public int[,] Data = new int[10, 512];
         public List<Enemy> Enemies;
 
         public Maps()
@@ -113,7 +89,7 @@ namespace Altseed_Side_scrolling
         {
             asd.Vector2DI Cell = new asd.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
             if (Cell.X < 0 || Cell.Y < 0 || Cell.X >= Length || Cell.Y >= 10) return false;
-            return MapManager.Parts[Data[Cell.Y][Cell.X]].IsBlock;
+            return (Data[Cell.Y, Cell.X] < 0x80);
         }
     }
 }

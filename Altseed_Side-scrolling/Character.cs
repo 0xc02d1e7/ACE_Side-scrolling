@@ -296,13 +296,13 @@ namespace Altseed_Side_scrolling
             Shoot++;
             if (Shoot % Interval == 0)
             {
-                if(TurnLR ^ Position.X>Target.Position.X)
+                if (TurnLR ^ Position.X > Target.Position.X)
                 {
-                asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
-                EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3, Target, Map);
-                this.Layer.AddObject(blt);
+                    asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
+                    EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3, Target, Map);
+                    this.Layer.AddObject(blt);
+                }
             }
-        }
         }
     }
 
