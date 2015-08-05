@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 
 namespace Altseed_Side_scrolling
@@ -31,14 +32,17 @@ namespace Altseed_Side_scrolling
         static public Maps Read(int stagecode)
         {
             System.Globalization.NumberStyles Hex = System.Globalization.NumberStyles.AllowHexSpecifier;
+            XmlDocument doc = new XmlDocument();
+            doc.Load("Maps/" + stagecode.ToString("X2") + ".xml");
+
+
             Maps map = new Maps();
             map.StageCode = stagecode;
-
-            StreamReader reader = new StreamReader("Maps/" + stagecode + ".txt", Encoding.Unicode);
+            XmlNode root = doc.DocumentElement;
+            XmlNodeList data = root.SelectSingleNode("Map").ChildNodes;
             for (int i = 0; i < 10; i++)
             {
-                string strbuf = reader.ReadLine();
-                string[] splited = strbuf.Split(' ');
+                string[] splited = data.Item(i).InnerText.Split(' ');
                 for (int j = 0; j < splited.Length; j++)
                 {
 
@@ -46,7 +50,6 @@ namespace Altseed_Side_scrolling
                 }
                 map.Length = Math.Min(map.Length, splited.Length);
             }
-
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < map.Length; j++)
@@ -59,15 +62,15 @@ namespace Altseed_Side_scrolling
                 }
             }
 
-            while (reader.Peek() >= 0)
+            XmlNodeList enemy = root.SelectNodes("Enemy");
+            foreach (XmlNode en in enemy)
             {
-                String[] Datas = (reader.ReadLine()).Split(' ');
-                int x = int.Parse(Datas[1]), y = int.Parse(Datas[2]);
-                Enemy e = new Enemy(Chars[int.Parse(Datas[0], Hex)], new asd.Vector2DF(x * 32.0f, y * 32.0f), map);
+                int Type = int.Parse(en.SelectSingleNode("Type").InnerText, Hex);
+                int X = int.Parse(en.SelectSingleNode("X").InnerText);
+                int Y = int.Parse(en.SelectSingleNode("Y").InnerText);
+                Enemy e = new Enemy(Chars[Type], new asd.Vector2DF(X * 32.0f, Y * 32.0f), map);
                 map.Enemies.Add(e);
             }
-            reader.Close();
-
             return map;
         }
     }
