@@ -63,6 +63,7 @@ namespace Altseed_Side_scrolling
     public class DeadScene : asd.Scene
     {
         protected int StageCode;
+        asd.TextObject2D Tcursor = new asd.TextObject2D();
         public DeadScene(int stagecode)
         {
             StageCode = stagecode;
@@ -89,10 +90,9 @@ namespace Altseed_Side_scrolling
             Ldead.AddObject(Tdead);
 
             BlinkingText Tpzkts = new BlinkingText(30);
-            Tpzkts.Text = "RETRY Z KEY TO START!";
+            Tpzkts.Text1 = "Z KEY: RETRY THIS STAGE";
+            Tpzkts.Text2 = "X KEY: BACK TO TITLE";
             Tpzkts.Font = FontContainer.PMP10_30B;
-            fsize = FontContainer.PMP10_30B.CalcTextureSize(Tpzkts.Text, asd.WritingDirection.Horizontal);
-            Tpzkts.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
             Ldead.AddObject(Tpzkts);
 
@@ -104,11 +104,20 @@ namespace Altseed_Side_scrolling
         protected override void OnUpdated()
         {
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(StageCode));
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.X) == asd.KeyState.Push) asd.Engine.ChangeScene(new TitleScene());
+
         }
     }
 
     public class TitleScene : asd.Scene
     {
+        int Cursor, MaxCount;
+        asd.TextObject2D Tstage = new asd.TextObject2D();
+        public TitleScene()
+        {
+            Cursor = 1;
+            MaxCount = MapManager.CountMaps();
+        }
         protected override void OnStart()
         {
             asd.Layer2D Lback = new asd.Layer2D();
@@ -130,12 +139,18 @@ namespace Altseed_Side_scrolling
             TTitle.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 128.0f);
 
             BlinkingText Tpzkts = new BlinkingText(30);
-            Tpzkts.Text = "PRESS Z KEY TO START!";
+            Tpzkts.Text1 = "Z KEY: GAME START";
+            Tpzkts.Text2 = "←/→ KEY: SELECT STAGE";
             Tpzkts.Font = FontContainer.PMP10_30B;
-            fsize = FontContainer.PMP10_30B.CalcTextureSize(Tpzkts.Text, asd.WritingDirection.Horizontal);
-            Tpzkts.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
 
+            Tstage.Text = "STAGE : 1 ";
+            Tstage.Font = FontContainer.PMP10_30B;
+            fsize = FontContainer.PMP10_30B.CalcTextureSize(Tstage.Text, asd.WritingDirection.Horizontal);
+            Tstage.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
+            Tstage.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 416.0f);
+
+            Ltitle.AddObject(Tstage);
             Ltitle.AddObject(Tpzkts);
             Ltitle.AddObject(TTitle);
             this.AddLayer(Ltitle);
@@ -145,7 +160,11 @@ namespace Altseed_Side_scrolling
 
         protected override void OnUpdated()
         {
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(1));
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(Cursor));
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Push && Cursor < MaxCount) Cursor++;
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Left) == asd.KeyState.Push && Cursor > 1) Cursor--;
+            Tstage.Text = "STAGE : " + Cursor.ToString();
+
 
         }
     }

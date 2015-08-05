@@ -84,6 +84,16 @@ namespace Altseed_Side_scrolling
 
             return map;
         }
+
+        static public int CountMaps()
+        {
+            int count = 1;
+            while (Directory.Exists("Maps/" + count.ToString() + ".txt")) ;
+            {
+                count++;
+            }
+            return count;
+        }
     }
 
     public class Maps : asd.MapObject2D

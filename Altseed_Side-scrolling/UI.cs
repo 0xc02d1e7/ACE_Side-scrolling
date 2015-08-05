@@ -116,17 +116,27 @@ namespace Altseed_Side_scrolling
 
     public class BlinkingText : asd.TextObject2D
     {
-        private int c;
+        private int c, s;
         private int Interval;
+        public string Text1, Text2;
         public BlinkingText(int interval)
         {
             Interval = interval;
+            c = 0;
+            s = 0;
         }
         protected override void OnUpdate()
         {
             c++;
             if (c % Interval == 0)
+            {
                 this.IsDrawn = !this.IsDrawn;
+                if(this.IsDrawn)s++;
+                this.Text=(s%2==0?Text1:Text2);
+                asd.Vector2DI fsize = FontContainer.PMP10_30B.CalcTextureSize(this.Text, asd.WritingDirection.Horizontal);
+                this.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
+                
+            }
         }
     }
 }
