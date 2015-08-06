@@ -8,7 +8,7 @@ namespace Altseed_Side_scrolling
 {
     public class GameScene : asd.Scene
     {
-        protected int StageCode;
+        private int StageCode;
 
         public GameScene(int stagecode)
         {
@@ -30,23 +30,22 @@ namespace Altseed_Side_scrolling
             {
                 Lgame.AddObject(e);
             }
-            this.AddLayer(Lgame);
+            AddLayer(Lgame);
 
             asd.Layer2D Lback = new asd.Layer2D();
             Background Gbacks = new Background(map.Length * 32);
             Lback.DrawingPriority = 0;
             Lback.AddObject(Gbacks);
-            this.AddLayer(Lback);
+            AddLayer(Lback);
 
 
             asd.Layer2D Lui = new asd.Layer2D();
             Lui.DrawingPriority = 3;
-            this.AddLayer(Lui);
+            AddLayer(Lui);
             FPSViewer fps = new FPSViewer();
             Lui.AddObject(fps);
             TimeCounter tc = new TimeCounter();
             Lui.AddObject(tc);
-            tc.Start();
 
             Camera Cam;
             Cam = new Camera(player);
@@ -62,12 +61,14 @@ namespace Altseed_Side_scrolling
 
     public class DeadScene : asd.Scene
     {
-        protected int StageCode;
-        asd.TextObject2D Tcursor = new asd.TextObject2D();
+        private int StageCode;
+        private asd.TextObject2D Tcursor = new asd.TextObject2D();
+
         public DeadScene(int stagecode)
         {
             StageCode = stagecode;
         }
+
         protected override void OnStart()
         {
             asd.Layer2D Lback = new asd.Layer2D();
@@ -89,15 +90,13 @@ namespace Altseed_Side_scrolling
             Tdead.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
             Ldead.AddObject(Tdead);
 
-            BlinkingText Tpzkts = new BlinkingText(30);
-            Tpzkts.Text1 = "Z KEY: RETRY THIS STAGE";
-            Tpzkts.Text2 = "X KEY: BACK TO TITLE";
+            BlinkingText Tpzkts = new BlinkingText(60, "Z KEY: RETRY THIS STAGE", "X KEY: BACK TO TITLE");
             Tpzkts.Font = FontContainer.PMP10_30B;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
             Ldead.AddObject(Tpzkts);
 
-            this.AddLayer(Ldead);
-            this.AddLayer(Lback);
+            AddLayer(Ldead);
+            AddLayer(Lback);
 
             Sound.BGMStop();
         }
@@ -111,13 +110,15 @@ namespace Altseed_Side_scrolling
 
     public class TitleScene : asd.Scene
     {
-        int Cursor, MaxCount;
-        asd.TextObject2D Tstage = new asd.TextObject2D();
+        private int Cursor, MaxCount;
+        private asd.TextObject2D Tstage = new asd.TextObject2D();
+
         public TitleScene()
         {
             Cursor = 1;
             MaxCount = 3;
         }
+
         protected override void OnStart()
         {
             asd.Layer2D Lback = new asd.Layer2D();
@@ -138,9 +139,7 @@ namespace Altseed_Side_scrolling
             TTitle.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             TTitle.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 128.0f);
 
-            BlinkingText Tpzkts = new BlinkingText(30);
-            Tpzkts.Text1 = "Z KEY: GAME START";
-            Tpzkts.Text2 = "←/→ KEY: SELECT STAGE";
+            BlinkingText Tpzkts = new BlinkingText(60, "Z KEY: GAME START", "←/→ KEY: SELECT STAGE");
             Tpzkts.Font = FontContainer.PMP10_30B;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
 
@@ -153,8 +152,8 @@ namespace Altseed_Side_scrolling
             Ltitle.AddObject(Tstage);
             Ltitle.AddObject(Tpzkts);
             Ltitle.AddObject(TTitle);
-            this.AddLayer(Ltitle);
-            this.AddLayer(Lback);
+            AddLayer(Ltitle);
+            AddLayer(Lback);
 
         }
 
@@ -171,8 +170,8 @@ namespace Altseed_Side_scrolling
 
     public class SplashScene : asd.Scene
     {
-        protected int Count;
-        protected int StageCode;
+        private int Count;
+        private int StageCode;
 
         public SplashScene(int stagecode)
         {
@@ -200,8 +199,8 @@ namespace Altseed_Side_scrolling
             Tsplash.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
             Lsplash.AddObject(Tsplash);
 
-            this.AddLayer(Lsplash);
-            this.AddLayer(Lback);
+            AddLayer(Lsplash);
+            AddLayer(Lback);
 
             Count = 0;
         }

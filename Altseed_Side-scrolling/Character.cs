@@ -84,7 +84,7 @@ namespace Altseed_Side_scrolling
 
 
             //敵との衝突検出
-            IEnumerable<asd.Object2D> enemies = this.Layer.Objects;
+            IEnumerable<asd.Object2D> enemies = Layer.Objects;
             foreach (asd.Object2D obj in enemies)
             {
                 if (obj == this) continue;
@@ -145,7 +145,7 @@ namespace Altseed_Side_scrolling
     public class Player : Character
     {
         private asd.Texture2D[] Bouningen = new asd.Texture2D[7];
-        public int KillFlag;
+        private int KillFlag;
 
         public Player(Maps _map)
             : base(_map, 13.0f, 32.0f, new asd.Vector2DF(256.0f, 100.0f))
@@ -208,38 +208,32 @@ namespace Altseed_Side_scrolling
 
             if (d.X > d.Y)
             {
-                if (e.motal == 0)
-                {
-                    Movement.Y = 0.0f;
-                    Velocity2 = obj.Velocity1;
-                    Velocity1.Y = 0.0f;
-                }
+                Movement.Y = 0.0f;
+                Velocity2 = obj.Velocity1;
+                Velocity1.Y = 0.0f;
             }
             else if (d.X < d.Y && d.X > 1.0f)
             {
                 KillFlag = 0;
-                TurnLR = (e.Position.X > this.Position.X);
+                TurnLR = (e.Position.X > Position.X);
             }
         }
 
         protected override void OnCollide(EnemyBullet obj)
         {
             KillFlag = 0;
-            TurnLR = (obj.Position.X > this.Position.X);
+            TurnLR = (obj.Position.X > Position.X);
         }
     }
 
     public class Enemy : Character
     {
-        public int motal;
-
         public Enemy(asd.Texture2D texture, asd.Vector2DF pos, Maps map)
             : base(map, 32.0f, 32.0f, pos)
         {
             Texture = texture;
             Velocity1 = new asd.Vector2DF(2.0f, 0.0f);
             CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
-            motal = 0;
             Width = Texture.Size.X;
             Height = Texture.Size.Y;
         }
@@ -256,10 +250,10 @@ namespace Altseed_Side_scrolling
 
     public class FlyingEnemy : asd.TextureObject2D
     {
-        asd.Object2D Target;
-        int Shoot, Interval;
-        asd.Texture2D BulletTexture;
-        Maps Map;
+        private asd.Object2D Target;
+        private int Shoot, Interval;
+        private asd.Texture2D BulletTexture;
+        private Maps Map;
 
         public FlyingEnemy(asd.Texture2D texture, asd.Object2D target, Maps map)
         {
@@ -300,7 +294,7 @@ namespace Altseed_Side_scrolling
                 {
                     asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
                     EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3, Target, Map);
-                    this.Layer.AddObject(blt);
+                    Layer.AddObject(blt);
                 }
             }
         }

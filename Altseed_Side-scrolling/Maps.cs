@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Altseed_Side_scrolling
     {
         static public asd.Texture2D[] Parts;
         static public asd.Texture2D[] Chars;
+
         static MapManager()
         {
             Parts = new asd.Texture2D[256];
@@ -31,46 +33,53 @@ namespace Altseed_Side_scrolling
 
         static public Maps Read(int stagecode)
         {
-            System.Globalization.NumberStyles Hex = System.Globalization.NumberStyles.AllowHexSpecifier;
-            XmlDocument doc = new XmlDocument();
-            doc.Load("Maps/" + stagecode.ToString("X2") + ".xml");
-
-
             Maps map = new Maps();
             map.StageCode = stagecode;
-            XmlNode root = doc.DocumentElement;
-            XmlNodeList data = root.SelectSingleNode("Map").ChildNodes;
+
+            System.Globalization.NumberStyles Hex = System.Globalization.NumberStyles.AllowHexSpecifier;
+
+            XmlDocument XmlDoc = new XmlDocument();
+            XmlDoc.Load("Maps/" + stagecode.ToString("X2") + ".xml");
+
+            XmlNode Root = XmlDoc.DocumentElement;
+            XmlNodeList ChipsNodes = Root.SelectSingleNode("Field").ChildNodes;
+
+            List<List<int>> FieldBuffer = new List<List<int>>();
             for (int i = 0; i < 10; i++)
             {
-                string[] splited = data.Item(i).InnerText.Split(' ');
+                FieldBuffer.Add(new List<int>());
+                string[] splited = ChipsNodes.Item(i).InnerText.Split(' ');
                 for (int j = 0; j < splited.Length; j++)
                 {
-
-                    map.Data[i, j] = int.Parse(splited[j], Hex);
+                    FieldBuffer[i].Add(int.Parse(splited[j], Hex));
                 }
-                map.Length = Math.Min(map.Length, splited.Length);
+                map.Length = Math.Min(splited.Length, map.Length);
             }
+
+            map.Field = new int[10, map.Length];
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < map.Length; j++)
                 {
+                    map.Field[i, j] = FieldBuffer[i][j];
+
                     asd.Chip2D chip = new asd.Chip2D();
-                    chip.Texture = Parts[map.Data[i, j]];
+                    chip.Texture = Parts[map.Field[i, j]];
                     chip.Position = new asd.Vector2DF(j * 32.0f, i * 32.0f);
                     chip.CenterPosition = new asd.Vector2DF(16.0f, 16.0f);
                     map.AddChip(chip);
                 }
             }
 
-            XmlNodeList enemy = root.SelectNodes("Enemy");
-            foreach (XmlNode en in enemy)
+            foreach (XmlNode EnemyNode in Root.SelectNodes("Enemy"))
             {
-                int Type = int.Parse(en.SelectSingleNode("Type").InnerText, Hex);
-                int X = int.Parse(en.SelectSingleNode("X").InnerText);
-                int Y = int.Parse(en.SelectSingleNode("Y").InnerText);
+                int Type = int.Parse(EnemyNode.SelectSingleNode("Type").InnerText, Hex);
+                int X = int.Parse(EnemyNode.SelectSingleNode("X").InnerText);
+                int Y = int.Parse(EnemyNode.SelectSingleNode("Y").InnerText);
                 Enemy e = new Enemy(Chars[Type], new asd.Vector2DF(X * 32.0f, Y * 32.0f), map);
                 map.Enemies.Add(e);
             }
+
             return map;
         }
     }
@@ -79,12 +88,12 @@ namespace Altseed_Side_scrolling
     {
         public int StageCode;
         public int Length = int.MaxValue;
-        public int[,] Data = new int[10, 512];
+        public int[,] Field;
         public List<Enemy> Enemies;
 
         public Maps()
         {
-            this.DrawingPriority = 1;
+            DrawingPriority = 1;
             Enemies = new List<Enemy>();
         }
 
@@ -92,7 +101,7 @@ namespace Altseed_Side_scrolling
         {
             asd.Vector2DI Cell = new asd.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
             if (Cell.X < 0 || Cell.Y < 0 || Cell.X >= Length || Cell.Y >= 10) return false;
-            return (Data[Cell.Y, Cell.X] < 0x80);
+            return (Field[Cell.Y, Cell.X] < 0x80);
         }
     }
 }
