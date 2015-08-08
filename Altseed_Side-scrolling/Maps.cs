@@ -24,7 +24,7 @@ namespace Altseed_Side_scrolling
             }
 
             Chars = new asd.Texture2D[256];
-            for (int i = 0; i < 256; i++)
+            for (int i = 0; i <=0xFF; i++)
             {
                 Chars[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/" + i.ToString("X2") + ".png");
                 if (Chars[i] == null) break;

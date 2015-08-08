@@ -13,10 +13,10 @@ namespace Altseed_Side_scrolling
         private Player player;
         private asd.Layer2D Lgame;
 
-        public GameScene(int stagecode)
+        public GameScene(int stagecode,Maps map)
         {
             StageCode = stagecode;
-            Map = MapManager.Read(StageCode);
+            Map = map;
         }
 
         protected override void OnStart()
@@ -62,20 +62,6 @@ namespace Altseed_Side_scrolling
 
         protected override void OnUpdated()
         {
-            /*
-            foreach (FlyingEnemyTrigger t in Map.HeliTrigger)
-            {
-                if ((int)player.Position.X / 32 == t.PositionX)
-                {
-                    FlyingEnemy fe = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, Map);
-                    fe.Position = new asd.Vector2DF(player.Position.X + (t.TurnLR ? -300.0f : 300.0f), 32.0f);
-                    fe.TurnLR = t.TurnLR;
-                    Lgame.AddObject(fe);
-                    Map.HeliTrigger.Remove(t);
-                    break;
-                }
-            }
-             */
             FlyingEnemyTrigger Trigger = Map.HeliTrigger.Find(t => t.PositionX == (int)player.Position.X / 32);
             if (Trigger != null)
             {
@@ -97,7 +83,7 @@ namespace Altseed_Side_scrolling
         {
             StageCode = stagecode;
         }
-
+        
         protected override void OnStart()
         {
             asd.Layer2D Lback = new asd.Layer2D();
@@ -131,9 +117,8 @@ namespace Altseed_Side_scrolling
         }
         protected override void OnUpdated()
         {
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(StageCode));
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(StageCode,MapManager.Read(StageCode)));
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.X) == asd.KeyState.Push) asd.Engine.ChangeScene(new TitleScene());
-
         }
     }
 
@@ -188,7 +173,7 @@ namespace Altseed_Side_scrolling
 
         protected override void OnUpdated()
         {
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(Cursor));
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new SplashScene(Cursor,MapManager.Read(Cursor)));
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Push && Cursor < MaxCount) Cursor++;
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Left) == asd.KeyState.Push && Cursor > 1) Cursor--;
             Tstage.Text = "STAGE : " + Cursor.ToString();
@@ -201,10 +186,12 @@ namespace Altseed_Side_scrolling
     {
         private int Count;
         private int StageCode;
+        Maps Map;
 
-        public SplashScene(int stagecode)
+        public SplashScene(int stagecode,Maps map)
         {
             StageCode = stagecode;
+            Map = map;
         }
 
         protected override void OnStart()
@@ -236,7 +223,7 @@ namespace Altseed_Side_scrolling
         protected override void OnUpdated()
         {
             Count++;
-            if (Count >= 100) asd.Engine.ChangeScene(new GameScene(StageCode));
+            if (Count >= 100) asd.Engine.ChangeScene(new GameScene(StageCode,Map));
         }
     }
 }
