@@ -248,14 +248,14 @@ namespace Altseed_Side_scrolling
         }
     }
 
-    public class FlyingEnemy : asd.TextureObject2D
+    public class FlyingEnemyLoop : asd.TextureObject2D
     {
         private asd.Object2D Target;
         private int Shoot, Interval;
         private asd.Texture2D BulletTexture;
         private Maps Map;
 
-        public FlyingEnemy(asd.Texture2D texture, asd.Object2D target, Maps map)
+        public FlyingEnemyLoop(asd.Texture2D texture, asd.Object2D target, Maps map)
         {
             Texture = texture;
             Position = new asd.Vector2DF(0.0f, 32.0f);
@@ -297,6 +297,70 @@ namespace Altseed_Side_scrolling
                     Layer.AddObject(blt);
                 }
             }
+        }
+    }
+
+    public class FlyingEnemy : asd.TextureObject2D
+    {
+        private asd.Object2D Target;
+        private int Shoot, Interval;
+        private asd.Texture2D BulletTexture;
+        private Maps Map;
+
+        public FlyingEnemy(asd.Texture2D texture, asd.Object2D target, Maps map)
+        {
+            Texture = texture;
+            Position = new asd.Vector2DF(0.0f, 32.0f);
+            CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
+            BulletTexture = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/enemybullet.png");
+            Target = target;
+            Map = map;
+            Shoot = 0;
+            Interval = 30;
+            DrawingPriority = 2;
+        }
+
+        protected override void OnUpdate()
+        {
+            if (TurnLR)
+            {
+                Position += new asd.Vector2DF(3.0f, 0.0f);
+                if (Position.X > Target.Position.X + 300)
+                {
+                    Vanish();
+                }
+            }
+            else
+            {
+                Position += new asd.Vector2DF(-3.0f, 0.0f);
+                if (Position.X < Target.Position.X - 332)
+                {
+                    Vanish();
+                }
+            }
+
+            Shoot++;
+            if (Shoot % Interval == 0)
+            {
+                if (TurnLR ^ Position.X > Target.Position.X)
+                {
+                    asd.Vector2DF pos = Position + new asd.Vector2DF(0, 12);
+                    EnemyBullet blt = new EnemyBullet(BulletTexture, pos, (Target.Position - pos).Normal * 3, Target, Map);
+                    Layer.AddObject(blt);
+                }
+            }
+        }
+    }
+
+    public class FlyingEnemyTrigger
+    {
+        private int PositionX;
+        private bool TurnLR;
+        
+        public FlyingEnemyTrigger(int x,bool turn)
+        {
+            PositionX = x;
+            TurnLR = turn;
         }
     }
 

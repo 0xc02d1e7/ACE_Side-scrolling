@@ -42,8 +42,13 @@ namespace Altseed_Side_scrolling
             XmlDoc.Load("Maps/" + stagecode.ToString("X2") + ".xml");
 
             XmlNode Root = XmlDoc.DocumentElement;
-            XmlNodeList ChipsNodes = Root.SelectSingleNode("Field").ChildNodes;
 
+            foreach(XmlNode TalkNode in Root.SelectSingleNode("Talk").ChildNodes)
+            {
+                map.Talk.Add(TalkNode.InnerText);
+            }
+            
+            XmlNodeList ChipsNodes = Root.SelectSingleNode("Field").ChildNodes;
             List<List<int>> FieldBuffer = new List<List<int>>();
             for (int i = 0; i < 10; i++)
             {
@@ -80,6 +85,13 @@ namespace Altseed_Side_scrolling
                 map.Enemies.Add(e);
             }
 
+            foreach(XmlNode TriggerNode in Root.SelectSingleNode("FlyingEnemyTriggers").ChildNodes)
+            {
+                int X=int.Parse(TriggerNode.SelectSingleNode("X").InnerText);
+                bool turn=(TriggerNode.SelectSingleNode("Turn").InnerText=="true");
+                FlyingEnemyTrigger t = new FlyingEnemyTrigger(X, turn);
+                map.HeliTrigger.Add(t);
+            }
             return map;
         }
     }
@@ -89,12 +101,16 @@ namespace Altseed_Side_scrolling
         public int StageCode;
         public int Length = int.MaxValue;
         public int[,] Field;
+        public List<string> Talk;
         public List<Enemy> Enemies;
+        public List<FlyingEnemyTrigger> HeliTrigger;
 
         public Maps()
         {
             DrawingPriority = 1;
+            Talk = new List<string>();
             Enemies = new List<Enemy>();
+            HeliTrigger = new List<FlyingEnemyTrigger>();
         }
 
         public bool Isblocked(asd.Vector2DF pos)

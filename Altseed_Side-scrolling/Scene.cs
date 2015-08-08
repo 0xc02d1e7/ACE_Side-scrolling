@@ -22,7 +22,7 @@ namespace Altseed_Side_scrolling
             Lgame.AddObject(map);
 
             Player player = new Player(map);
-            FlyingEnemy heli = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, map);
+            FlyingEnemyLoop heli = new FlyingEnemyLoop(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, map);
             Lgame.DrawingPriority = 2;
             Lgame.AddObject(player);
             Lgame.AddObject(heli);
