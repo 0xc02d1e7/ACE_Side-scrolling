@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Altseed_Side_scrolling
 {
-    static public class FontContainer
+    public class FontContainer
     {
-        static public asd.Font PMP10_30B;
-        static public asd.Font PMP12_60B;
-        static public asd.Font PMP12_60W;
+        public asd.Font PMP10_30B;
+        public asd.Font PMP12_60B;
+        public asd.Font PMP12_60W;
 
-        static FontContainer()
+        public FontContainer()
         {
             PMP10_30B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus10-Regular.ttf", 30, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
             PMP12_60B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
@@ -74,9 +74,12 @@ namespace Altseed_Side_scrolling
 
     public class FPSViewer : asd.TextObject2D
     {
-        public FPSViewer()
+        FontContainer Fonts;
+
+        public FPSViewer(FontContainer fonts)
         {
-            Font = FontContainer.PMP10_30B;
+            Fonts = fonts;
+            Font = Fonts.PMP10_30B;
             Position = new asd.Vector2DF(0.0f, 0.0f);
         }
 
@@ -89,11 +92,13 @@ namespace Altseed_Side_scrolling
     public class TimeCounter : asd.TextObject2D
     {
         private ulong time;
+        FontContainer Fonts;
 
-        public TimeCounter()
+        public TimeCounter(FontContainer fonts)
         {
             time = 0;
-            Font = FontContainer.PMP10_30B;
+            Fonts = fonts;
+            Font = Fonts.PMP10_30B;
             Position = new asd.Vector2DF(300.0f, 0.0f);
         }
 
@@ -109,14 +114,16 @@ namespace Altseed_Side_scrolling
         private int Count, Selecter;
         private int Interval;
         private string Text1, Text2;
+        FontContainer Fonts;
 
-        public BlinkingText(int interval, string text1, string text2)
+        public BlinkingText(int interval, string text1, string text2,FontContainer fonts)
         {
             Interval = interval;
             Text1 = text1;
             Text2 = text2;
             Count = 0;
             Selecter = 0;
+            Fonts = fonts;
         }
 
         protected override void OnUpdate()
@@ -125,7 +132,7 @@ namespace Altseed_Side_scrolling
             {
                 Selecter++;
                 Text = (Selecter % 2 == 0 ? Text1 : Text2);
-                asd.Vector2DI fsize = FontContainer.PMP10_30B.CalcTextureSize(Text, asd.WritingDirection.Horizontal);
+                asd.Vector2DI fsize = Fonts.PMP10_30B.CalcTextureSize(Text, asd.WritingDirection.Horizontal);
                 CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             }
             Count++;

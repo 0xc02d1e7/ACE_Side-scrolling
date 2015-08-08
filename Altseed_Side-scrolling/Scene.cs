@@ -12,11 +12,13 @@ namespace Altseed_Side_scrolling
         private Maps Map;
         private Player player;
         private asd.Layer2D Lgame;
+        FontContainer Fonts;
 
         public GameScene(int stagecode, Maps map)
         {
             StageCode = stagecode;
             Map = map;
+            Fonts = new FontContainer();
         }
 
         protected override void OnStart()
@@ -44,9 +46,9 @@ namespace Altseed_Side_scrolling
             asd.Layer2D Lui = new asd.Layer2D();
             Lui.DrawingPriority = 3;
             AddLayer(Lui);
-            FPSViewer fps = new FPSViewer();
+            FPSViewer fps = new FPSViewer(Fonts);
             Lui.AddObject(fps);
-            TimeCounter tc = new TimeCounter();
+            TimeCounter tc = new TimeCounter(Fonts);
             Lui.AddObject(tc);
 
             Camera Cam;
@@ -78,10 +80,12 @@ namespace Altseed_Side_scrolling
     {
         private int StageCode;
         private asd.TextObject2D Tcursor = new asd.TextObject2D();
+        FontContainer Fonts;
 
         public DeadScene(int stagecode)
         {
             StageCode = stagecode;
+            Fonts = new FontContainer();
         }
 
         protected override void OnStart()
@@ -98,15 +102,15 @@ namespace Altseed_Side_scrolling
             asd.Layer2D Ldead = new asd.Layer2D();
             Ldead.DrawingPriority = 1;
             asd.TextObject2D Tdead = new asd.TextObject2D();
-            Tdead.Font = FontContainer.PMP12_60B;
+            Tdead.Font = Fonts.PMP12_60B;
             Tdead.Text = "GAME OVER";
-            asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize(Tdead.Text, asd.WritingDirection.Horizontal);
+            asd.Vector2DI fsize = Fonts.PMP12_60B.CalcTextureSize(Tdead.Text, asd.WritingDirection.Horizontal);
             Tdead.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tdead.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
             Ldead.AddObject(Tdead);
 
-            BlinkingText Tpzkts = new BlinkingText(60, "Z KEY: RETRY THIS STAGE", "X KEY: BACK TO TITLE");
-            Tpzkts.Font = FontContainer.PMP10_30B;
+            BlinkingText Tpzkts = new BlinkingText(60, "Z KEY: RETRY THIS STAGE", "X KEY: BACK TO TITLE",Fonts);
+            Tpzkts.Font = Fonts.PMP10_30B;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
             Ldead.AddObject(Tpzkts);
 
@@ -126,11 +130,13 @@ namespace Altseed_Side_scrolling
     {
         private int Cursor, MaxCount;
         private asd.TextObject2D Tstage = new asd.TextObject2D();
+        FontContainer Fonts;
 
         public TitleScene()
         {
             Cursor = 1;
             MaxCount = 3;
+            Fonts = new FontContainer();
         }
 
         protected override void OnStart()
@@ -148,18 +154,18 @@ namespace Altseed_Side_scrolling
             Ltitle.DrawingPriority = 1;
             asd.TextObject2D TTitle = new asd.TextObject2D();
             TTitle.Text = Altseed_Side_scrolling_Core.Title;
-            TTitle.Font = FontContainer.PMP12_60B;
-            asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize(Altseed_Side_scrolling_Core.Title, asd.WritingDirection.Horizontal);
+            TTitle.Font = Fonts.PMP12_60B;
+            asd.Vector2DI fsize = Fonts.PMP12_60B.CalcTextureSize(Altseed_Side_scrolling_Core.Title, asd.WritingDirection.Horizontal);
             TTitle.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             TTitle.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 128.0f);
 
-            BlinkingText Tpzkts = new BlinkingText(60, "Z KEY: GAME START", "←/→ KEY: SELECT STAGE");
-            Tpzkts.Font = FontContainer.PMP10_30B;
+            BlinkingText Tpzkts = new BlinkingText(60, "Z KEY: GAME START", "←/→ KEY: SELECT STAGE",Fonts);
+            Tpzkts.Font = Fonts.PMP10_30B;
             Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
 
             Tstage.Text = "STAGE : 1 ";
-            Tstage.Font = FontContainer.PMP10_30B;
-            fsize = FontContainer.PMP10_30B.CalcTextureSize(Tstage.Text, asd.WritingDirection.Horizontal);
+            Tstage.Font = Fonts.PMP10_30B;
+            fsize = Fonts.PMP10_30B.CalcTextureSize(Tstage.Text, asd.WritingDirection.Horizontal);
             Tstage.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tstage.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 416.0f);
 
@@ -187,6 +193,7 @@ namespace Altseed_Side_scrolling
         int Cursor, Count;
         asd.Layer2D Ltalk;
         asd.TextObject2D[] Texts;
+        FontContainer Fonts;
 
         public TalkScene(int stagecode, Maps map)
         {
@@ -195,6 +202,7 @@ namespace Altseed_Side_scrolling
             Cursor = 0;
             Count = 0;
             Texts = new asd.TextObject2D[map.Talk.Count];
+            Fonts = new FontContainer();
         }
 
         protected override void OnStart()
@@ -213,7 +221,7 @@ namespace Altseed_Side_scrolling
             for (int i = 0; i < Texts.Length; i++)
             {
                 Texts[i] = new asd.TextObject2D();
-                Texts[i].Font = FontContainer.PMP10_30B;
+                Texts[i].Font = Fonts.PMP10_30B;
                 Ltalk.AddObject(Texts[i]);
             }
 
@@ -254,11 +262,13 @@ namespace Altseed_Side_scrolling
         private int Count;
         private int StageCode;
         Maps Map;
+        FontContainer Fonts;
 
         public SplashScene(int stagecode, Maps map)
         {
             StageCode = stagecode;
             Map = map;
+            Fonts = new FontContainer();
         }
 
         protected override void OnStart()
@@ -275,9 +285,9 @@ namespace Altseed_Side_scrolling
             asd.Layer2D Lsplash = new asd.Layer2D();
             Lsplash.DrawingPriority = 1;
             asd.TextObject2D Tsplash = new asd.TextObject2D();
-            Tsplash.Font = FontContainer.PMP12_60B;
+            Tsplash.Font = Fonts.PMP12_60B;
             Tsplash.Text = "STAGE " + StageCode;
-            asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize(Tsplash.Text, asd.WritingDirection.Horizontal);
+            asd.Vector2DI fsize = Fonts.PMP12_60B.CalcTextureSize(Tsplash.Text, asd.WritingDirection.Horizontal);
             Tsplash.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tsplash.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
             Lsplash.AddObject(Tsplash);
