@@ -40,7 +40,6 @@ namespace Altseed_Side_scrolling
 
             XmlDocument XmlDoc = new XmlDocument();
             XmlDoc.Load("Maps/" + stagecode.ToString("X2") + ".xml");
-
             XmlNode Root = XmlDoc.DocumentElement;
 
             foreach(XmlNode TalkNode in Root.SelectSingleNode("Talk").ChildNodes)

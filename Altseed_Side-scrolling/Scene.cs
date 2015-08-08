@@ -9,31 +9,33 @@ namespace Altseed_Side_scrolling
     public class GameScene : asd.Scene
     {
         private int StageCode;
+        private Maps Map;
+        private Player player;
+        private asd.Layer2D Lgame;
 
         public GameScene(int stagecode)
         {
             StageCode = stagecode;
+            Map = MapManager.Read(StageCode);
         }
 
         protected override void OnStart()
         {
-            asd.Layer2D Lgame = new asd.Layer2D();
-            Maps map = MapManager.Read(StageCode);
-            Lgame.AddObject(map);
-
-            Player player = new Player(map);
-            FlyingEnemyLoop heli = new FlyingEnemyLoop(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, map);
+            Lgame = new asd.Layer2D();
             Lgame.DrawingPriority = 2;
+
+            Lgame.AddObject(Map);
+
+            player = new Player(Map);
             Lgame.AddObject(player);
-            Lgame.AddObject(heli);
-            foreach (Enemy e in map.Enemies)
+            foreach (Enemy e in Map.Enemies)
             {
                 Lgame.AddObject(e);
             }
             AddLayer(Lgame);
 
             asd.Layer2D Lback = new asd.Layer2D();
-            Background Gbacks = new Background(map.Length * 32);
+            Background Gbacks = new Background(Map.Length * 32);
             Lback.DrawingPriority = 0;
             Lback.AddObject(Gbacks);
             AddLayer(Lback);
@@ -56,6 +58,23 @@ namespace Altseed_Side_scrolling
             Lback.AddObject(BCam);
 
             Sound.BGMStart();
+        }
+        
+        protected override void OnUpdated()
+        {
+            foreach (FlyingEnemyTrigger t in Map.HeliTrigger)
+            {
+                if ((int)player.Position.X / 32 == t.PositionX)
+                {
+                    FlyingEnemy fe=new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, Map);
+                    fe.Position = new asd.Vector2DF(player.Position.X + (t.TurnLR ? -300.0f : 300.0f), 32.0f);
+                    fe.TurnLR = t.TurnLR;
+                    Lgame.AddObject(fe);
+                    Map.HeliTrigger.Remove(t);
+                    break;
+                }
+            }
+            
         }
     }
 
