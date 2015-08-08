@@ -59,14 +59,15 @@ namespace Altseed_Side_scrolling
 
             Sound.BGMStart();
         }
-        
+
         protected override void OnUpdated()
         {
+            /*
             foreach (FlyingEnemyTrigger t in Map.HeliTrigger)
             {
                 if ((int)player.Position.X / 32 == t.PositionX)
                 {
-                    FlyingEnemy fe=new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, Map);
+                    FlyingEnemy fe = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, Map);
                     fe.Position = new asd.Vector2DF(player.Position.X + (t.TurnLR ? -300.0f : 300.0f), 32.0f);
                     fe.TurnLR = t.TurnLR;
                     Lgame.AddObject(fe);
@@ -74,7 +75,16 @@ namespace Altseed_Side_scrolling
                     break;
                 }
             }
-            
+             */
+            FlyingEnemyTrigger Trigger = Map.HeliTrigger.Find(t => t.PositionX == (int)player.Position.X / 32);
+            if (Trigger != null)
+            {
+                FlyingEnemy fe = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, Map);
+                fe.Position = new asd.Vector2DF(player.Position.X + (Trigger.TurnLR ? -300.0f : 300.0f), 32.0f);
+                fe.TurnLR = Trigger.TurnLR;
+                Lgame.AddObject(fe);
+                Map.HeliTrigger.Remove(Trigger);
+            }
         }
     }
 
