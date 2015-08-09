@@ -7,3 +7,6 @@
 /Altseed_Side-scrolling/Resources
 /Altseed_Side-scrolling/MusicSource
 *.txt
+*.exe
+Altseed_Side-scrolling/FilePackageGenerator.GUI.exe.config
+*.pack

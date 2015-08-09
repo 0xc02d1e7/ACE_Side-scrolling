@@ -14,9 +14,9 @@ namespace Altseed_Side_scrolling
 
         static FontContainer()
         {
-            PMP10_30B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus10-Regular.ttf", 30, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
-            PMP12_60B = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
-            PMP12_60W = asd.Engine.Graphics.CreateDynamicFont(@"\Resources\Font\PixelMplus12-Regular.ttf", 60, new asd.Color(255, 255, 255, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP10_30B = asd.Engine.Graphics.CreateDynamicFont("Font/PixelMplus10-Regular.ttf", 30, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP12_60B = asd.Engine.Graphics.CreateDynamicFont("Font/PixelMplus12-Regular.ttf", 60, new asd.Color(0, 0, 0, 255), 0, new asd.Color(0, 0, 0, 0));
+            PMP12_60W = asd.Engine.Graphics.CreateDynamicFont("Font/PixelMplus12-Regular.ttf", 60, new asd.Color(255, 255, 255, 255), 0, new asd.Color(0, 0, 0, 0));
 
         }
     }
@@ -43,7 +43,7 @@ namespace Altseed_Side_scrolling
 
         public Background(int width)
         {
-            Texture = asd.Engine.Graphics.CreateTexture2D("Resources/UI/back.png");
+            Texture = asd.Engine.Graphics.CreateTexture2D("UI/back.png");
             int length = (int)(width / 0.8f / Texture.Size.X) + 4;
             for (int i = 0; i < length; i++)
             {

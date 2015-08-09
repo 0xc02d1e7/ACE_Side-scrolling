@@ -72,7 +72,7 @@ namespace Altseed_Side_scrolling
             FlyingEnemyTrigger Trigger = Map.HeliTrigger.Find(t => t.PositionX == (int)player.Position.X / 32);
             if (Trigger != null)
             {
-                FlyingEnemy fe = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Resources/Characters/heli.png"), player, Map);
+                FlyingEnemy fe = new FlyingEnemy(asd.Engine.Graphics.CreateTexture2D("Characters/heli.png"), player, Map);
                 fe.Position = new asd.Vector2DF(player.Position.X + (Trigger.TurnLR ? -300.0f : 300.0f), 32.0f);
                 fe.TurnLR = Trigger.TurnLR;
                 Lgame.AddObject(fe);
@@ -367,7 +367,7 @@ namespace Altseed_Side_scrolling
 
             asd.TextObject2D Ttime = new asd.TextObject2D();
             Ttime.Font = FontContainer.PMP10_30B;
-            Ttime.Text = "TIME:" + (Time/60).ToString("D3");
+            Ttime.Text = "TIME:" + (Time / 60).ToString("D3");
             fsize = FontContainer.PMP10_30B.CalcTextureSize(Ttime.Text, asd.WritingDirection.Horizontal);
             Ttime.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Ttime.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 424.0f);

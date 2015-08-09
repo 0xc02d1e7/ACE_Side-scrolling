@@ -13,14 +13,14 @@ namespace Altseed_Side_scrolling
         static asd.SoundSource[] SE = new asd.SoundSource[3];
         static Sound()
         {
-            BGM0 = asd.Engine.Sound.CreateSoundSource("Resources/Sound/bgm0.ogg", false);
+            BGM0 = asd.Engine.Sound.CreateSoundSource("Sound/bgm0.ogg", false);
             BGM0.IsLoopingMode = true;
             BGM0.LoopStartingPoint = 89.298f;
             BGM0.LoopEndPoint = 167.441f;
 
-            SE[0] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/jump.ogg", true);
-            SE[1] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/dead.ogg", true);
-            SE[2] = asd.Engine.Sound.CreateSoundSource("Resources/Sound/clear.ogg", true);
+            SE[0] = asd.Engine.Sound.CreateSoundSource("Sound/jump.ogg", true);
+            SE[1] = asd.Engine.Sound.CreateSoundSource("Sound/dead.ogg", true);
+            SE[2] = asd.Engine.Sound.CreateSoundSource("Sound/clear.ogg", true);
 
         }
 

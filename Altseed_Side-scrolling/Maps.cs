@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Globalization;
 
 
 namespace Altseed_Side_scrolling
@@ -20,13 +21,13 @@ namespace Altseed_Side_scrolling
             Parts = new asd.Texture2D[256];
             for (int i = 0; i <= 0xFF; i++)
             {
-                Parts[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Block/" + i.ToString("X2") + ".png");
+                Parts[i] = asd.Engine.Graphics.CreateTexture2D("Block/" + i.ToString("X2") + ".png");
             }
 
             Chars = new asd.Texture2D[256];
             for (int i = 0; i <= 0xFF; i++)
             {
-                Chars[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/" + i.ToString("X2") + ".png");
+                Chars[i] = asd.Engine.Graphics.CreateTexture2D("Characters/" + i.ToString("X2") + ".png");
                 if (Chars[i] == null) break;
             }
         }
@@ -36,10 +37,13 @@ namespace Altseed_Side_scrolling
             Maps map = new Maps();
             map.StageCode = stagecode;
 
-            System.Globalization.NumberStyles Hex = System.Globalization.NumberStyles.AllowHexSpecifier;
+            NumberStyles Hex = NumberStyles.AllowHexSpecifier;
+            Encoding UTF8Encoder = Encoding.GetEncoding("UTF-8");
 
+asd.StaticFile reader = asd.Engine.File.CreateStaticFile("Maps/" + stagecode.ToString("X2") + ".xml");
             XmlDocument XmlDoc = new XmlDocument();
-            XmlDoc.Load("Maps/" + stagecode.ToString("X2") + ".xml");
+            System.Console.Write(UTF8Encoder.GetString(reader.Buffer));
+            XmlDoc.LoadXml(UTF8Encoder.GetString(reader.Buffer));
             XmlNode Root = XmlDoc.DocumentElement;
 
             foreach (XmlNode TalkNode in Root.SelectSingleNode("Talk").ChildNodes)

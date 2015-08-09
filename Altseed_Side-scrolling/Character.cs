@@ -152,7 +152,7 @@ namespace Altseed_Side_scrolling
         {
             for (int i = 0; i < 7; i++)
             {
-                Bouningen[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/W" + i.ToString() + ".png");
+                Bouningen[i] = asd.Engine.Graphics.CreateTexture2D("Characters/W" + i.ToString() + ".png");
             }
             Texture = Bouningen[0];
             CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
@@ -260,7 +260,7 @@ namespace Altseed_Side_scrolling
             Texture = texture;
             Position = new asd.Vector2DF(0.0f, 32.0f);
             CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
-            BulletTexture = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/enemybullet.png");
+            BulletTexture = asd.Engine.Graphics.CreateTexture2D("Characters/enemybullet.png");
             Target = target;
             Map = map;
             Shoot = 0;
@@ -312,7 +312,7 @@ namespace Altseed_Side_scrolling
             Texture = texture;
             Position = new asd.Vector2DF(0.0f, 32.0f);
             CenterPosition = new asd.Vector2DF((float)Texture.Size.X / 2.0f, (float)Texture.Size.Y / 2.0f);
-            BulletTexture = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/enemybullet.png");
+            BulletTexture = asd.Engine.Graphics.CreateTexture2D("Characters/enemybullet.png");
             Target = target;
             Map = map;
             Shoot = 0;

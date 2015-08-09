@@ -19,6 +19,8 @@ namespace Altseed_Side_scrolling
             // AC-Engineを初期化する。
             asd.Engine.Initialize(Title, 960, 640, new asd.EngineOption());
 
+            asd.Engine.File.AddRootPackageWithPassword("Resources.pack","dragdrug");
+
             asd.Engine.ChangeScene(new TitleScene());
 
             // AC-Engineが進行可能かチェックする。
