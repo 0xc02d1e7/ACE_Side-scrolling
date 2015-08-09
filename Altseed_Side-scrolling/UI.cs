@@ -72,38 +72,6 @@ namespace Altseed_Side_scrolling
         }
     }
 
-    public class FPSViewer : asd.TextObject2D
-    {
-        public FPSViewer()
-        {
-            Font = FontContainer.PMP10_30B;
-            Position = new asd.Vector2DF(0.0f, 0.0f);
-        }
-
-        protected override void OnUpdate()
-        {
-            Text = asd.Engine.CurrentFPS.ToString("F1") + "FPS";
-        }
-    }
-
-    public class TimeCounter : asd.TextObject2D
-    {
-        private ulong time;
-
-        public TimeCounter()
-        {
-            time = 0;
-            Font = FontContainer.PMP10_30B;
-            Position = new asd.Vector2DF(300.0f, 0.0f);
-        }
-
-        protected override void OnUpdate()
-        {
-            time++;
-            Text = "TIME: " + (time / 60).ToString("D3");
-        }
-    }
-
     public class BlinkingText : asd.TextObject2D
     {
         private int Count, Selecter;

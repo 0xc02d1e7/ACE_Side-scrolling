@@ -24,7 +24,7 @@ namespace Altseed_Side_scrolling
             }
 
             Chars = new asd.Texture2D[256];
-            for (int i = 0; i <=0xFF; i++)
+            for (int i = 0; i <= 0xFF; i++)
             {
                 Chars[i] = asd.Engine.Graphics.CreateTexture2D("Resources/Characters/" + i.ToString("X2") + ".png");
                 if (Chars[i] == null) break;
@@ -42,11 +42,11 @@ namespace Altseed_Side_scrolling
             XmlDoc.Load("Maps/" + stagecode.ToString("X2") + ".xml");
             XmlNode Root = XmlDoc.DocumentElement;
 
-            foreach(XmlNode TalkNode in Root.SelectSingleNode("Talk").ChildNodes)
+            foreach (XmlNode TalkNode in Root.SelectSingleNode("Talk").ChildNodes)
             {
                 map.Talk.Add(TalkNode.InnerText);
             }
-            
+
             XmlNodeList ChipsNodes = Root.SelectSingleNode("Field").ChildNodes;
             List<List<int>> FieldBuffer = new List<List<int>>();
             for (int i = 0; i < 10; i++)
@@ -84,10 +84,10 @@ namespace Altseed_Side_scrolling
                 map.Enemies.Add(e);
             }
 
-            foreach(XmlNode TriggerNode in Root.SelectSingleNode("FlyingEnemyTriggers").ChildNodes)
+            foreach (XmlNode TriggerNode in Root.SelectSingleNode("FlyingEnemyTriggers").ChildNodes)
             {
-                int X=int.Parse(TriggerNode.SelectSingleNode("X").InnerText);
-                bool turn=(TriggerNode.SelectSingleNode("Turn").InnerText=="true");
+                int X = int.Parse(TriggerNode.SelectSingleNode("X").InnerText);
+                bool turn = (TriggerNode.SelectSingleNode("Turn").InnerText == "true");
                 FlyingEnemyTrigger t = new FlyingEnemyTrigger(X, turn);
                 map.HeliTrigger.Add(t);
             }
@@ -117,6 +117,13 @@ namespace Altseed_Side_scrolling
             asd.Vector2DI Cell = new asd.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
             if (Cell.X < 0 || Cell.Y < 0 || Cell.X >= Length || Cell.Y >= 10) return false;
             return (Field[Cell.Y, Cell.X] < 0x80);
+        }
+
+        public bool IsGoal(asd.Vector2DF pos)
+        {
+            asd.Vector2DI Cell = new asd.Vector2DI((int)pos.X / 32, (int)pos.Y / 32);
+            if (Cell.X < 0 || Cell.Y < 0 || Cell.X >= Length || Cell.Y >= 10) return false;
+            return (Field[Cell.Y, Cell.X] == 0xFF);
         }
     }
 }

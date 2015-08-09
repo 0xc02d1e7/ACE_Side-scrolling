@@ -12,6 +12,8 @@ namespace Altseed_Side_scrolling
         private Maps Map;
         private Player player;
         private asd.Layer2D Lgame;
+        private asd.TextObject2D Tfps, Ttime;
+        private uint Time;
 
         public GameScene(int stagecode, Maps map)
         {
@@ -44,10 +46,14 @@ namespace Altseed_Side_scrolling
             asd.Layer2D Lui = new asd.Layer2D();
             Lui.DrawingPriority = 3;
             AddLayer(Lui);
-            FPSViewer fps = new FPSViewer();
-            Lui.AddObject(fps);
-            TimeCounter tc = new TimeCounter();
-            Lui.AddObject(tc);
+            Tfps = new asd.TextObject2D();
+            Tfps.Font = FontContainer.PMP10_30B;
+            Tfps.Position = new asd.Vector2DF(0.0f, 0.0f);
+            Lui.AddObject(Tfps);
+            Ttime = new asd.TextObject2D();
+            Ttime.Font = FontContainer.PMP10_30B;
+            Ttime.Position = new asd.Vector2DF(500.0f, 0.0f);
+            Lui.AddObject(Ttime);
 
             Camera Cam;
             Cam = new Camera(player);
@@ -57,10 +63,11 @@ namespace Altseed_Side_scrolling
             BCam = new BackgroundCamera(player);
             Lback.AddObject(BCam);
 
+            Time = 0;
             Sound.BGMStart();
         }
 
-        protected override void OnUpdated()
+        protected override void OnUpdating()
         {
             FlyingEnemyTrigger Trigger = Map.HeliTrigger.Find(t => t.PositionX == (int)player.Position.X / 32);
             if (Trigger != null)
@@ -70,6 +77,16 @@ namespace Altseed_Side_scrolling
                 fe.TurnLR = Trigger.TurnLR;
                 Lgame.AddObject(fe);
                 Map.HeliTrigger.Remove(Trigger);
+            }
+
+            Tfps.Text = asd.Engine.CurrentFPS.ToString("F1") + "FPS";
+            Time++;
+            Ttime.Text = "TIME: " + (Time / 60).ToString("D3");
+
+            if (Map.IsGoal(player.Position))
+            {
+                Sound.SEPlay(2);
+                asd.Engine.ChangeScene(new ResultScene(StageCode, Time));
             }
         }
     }
@@ -99,7 +116,7 @@ namespace Altseed_Side_scrolling
             Ldead.DrawingPriority = 1;
             asd.TextObject2D Tdead = new asd.TextObject2D();
             Tdead.Font = FontContainer.PMP12_60B;
-            Tdead.Text = "GAME OVER";
+            Tdead.Text = "MISSION FAILED";
             asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize(Tdead.Text, asd.WritingDirection.Horizontal);
             Tdead.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
             Tdead.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
@@ -124,13 +141,12 @@ namespace Altseed_Side_scrolling
 
     public class TitleScene : asd.Scene
     {
-        private int Cursor, MaxCount;
+        private int Cursor;
         private asd.TextObject2D Tstage = new asd.TextObject2D();
 
         public TitleScene()
         {
             Cursor = 1;
-            MaxCount = 3;
         }
 
         protected override void OnStart()
@@ -171,12 +187,17 @@ namespace Altseed_Side_scrolling
 
         }
 
+        protected override void OnUpdating()
+        {
+            Tstage.Text = "STAGE : " + Cursor.ToString();
+        }
+
         protected override void OnUpdated()
         {
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new TalkScene(Cursor, MapManager.Read(Cursor)));
-            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Push && Cursor < MaxCount) Cursor++;
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Right) == asd.KeyState.Push && Cursor < Altseed_Side_scrolling_Core.MapCount) Cursor++;
             if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Left) == asd.KeyState.Push && Cursor > 1) Cursor--;
-            Tstage.Text = "STAGE : " + Cursor.ToString();
+
         }
     }
 
@@ -221,7 +242,7 @@ namespace Altseed_Side_scrolling
             AddLayer(Lback);
         }
 
-        protected override void OnUpdated()
+        protected override void OnUpdating()
         {
             Count++;
             for (int i = 0; i <= Cursor; i++)
@@ -236,7 +257,7 @@ namespace Altseed_Side_scrolling
                 Cursor++;
                 if (Cursor == Map.Talk.Count)
                 {
-                    asd.Engine.ChangeScene(new GameScene(Cursor, Map));
+                    asd.Engine.ChangeScene(new SplashScene(StageCode, Map));
                     return;
                 }
 
@@ -286,11 +307,81 @@ namespace Altseed_Side_scrolling
             AddLayer(Lback);
 
             Count = 0;
+            System.Console.WriteLine(StageCode);
         }
         protected override void OnUpdated()
         {
             Count++;
             if (Count >= 100) asd.Engine.ChangeScene(new GameScene(StageCode, Map));
+        }
+    }
+
+    public class ResultScene : asd.Scene
+    {
+        private int StageCode;
+        private uint Time;
+        private asd.TextObject2D Tcursor = new asd.TextObject2D();
+
+        public ResultScene(int stagecode, uint time)
+        {
+            StageCode = stagecode;
+            Time = time;
+        }
+
+        protected override void OnStart()
+        {
+            asd.Layer2D Lback = new asd.Layer2D();
+            Lback.DrawingPriority = 0;
+            Background Gback = new Background(0);
+            Lback.AddObject(Gback);
+            asd.CameraObject2D Camera = new asd.CameraObject2D();
+            Camera.Dst = new asd.RectI(0, 0, 960, 640);
+            Camera.Src = new asd.RectI(0, 0, 480, 320);
+            Lback.AddObject(Camera);
+
+            asd.Layer2D Lclear = new asd.Layer2D();
+            Lclear.DrawingPriority = 1;
+            asd.TextObject2D Tclear = new asd.TextObject2D();
+            Tclear.Font = FontContainer.PMP12_60B;
+            Tclear.Text = "MISSION ACCOMPLISHED!";
+            asd.Vector2DI fsize = FontContainer.PMP12_60B.CalcTextureSize(Tclear.Text, asd.WritingDirection.Horizontal);
+            Tclear.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
+            Tclear.Position = new asd.Vector2DF(asd.Engine.WindowSize.X, asd.Engine.WindowSize.Y) / 2;
+            Lclear.AddObject(Tclear);
+
+            asd.TextObject2D Tpzkts;
+            if (StageCode == Altseed_Side_scrolling_Core.MapCount)
+            {
+                Tpzkts = new asd.TextObject2D();
+                Tpzkts.Text = "X KEY: BACK TO TITLE";
+                fsize = FontContainer.PMP10_30B.CalcTextureSize(Tpzkts.Text, asd.WritingDirection.Horizontal);
+                Tpzkts.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
+            }
+            else
+            {
+                Tpzkts = new BlinkingText(60, "Z KEY: GO TO NEXT STAGE", "X KEY: BACK TO TITLE");
+            }
+            Tpzkts.Font = FontContainer.PMP10_30B;
+            Tpzkts.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 384.0f);
+            Lclear.AddObject(Tpzkts);
+
+            asd.TextObject2D Ttime = new asd.TextObject2D();
+            Ttime.Font = FontContainer.PMP10_30B;
+            Ttime.Text = "TIME:" + (Time/60).ToString("D3");
+            fsize = FontContainer.PMP10_30B.CalcTextureSize(Ttime.Text, asd.WritingDirection.Horizontal);
+            Ttime.CenterPosition = new asd.Vector2DF(fsize.X, fsize.Y) / 2;
+            Ttime.Position = new asd.Vector2DF(asd.Engine.WindowSize.X / 2, 424.0f);
+            Lclear.AddObject(Ttime);
+
+            AddLayer(Lclear);
+            AddLayer(Lback);
+
+            Sound.BGMStop();
+        }
+        protected override void OnUpdated()
+        {
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.Z) == asd.KeyState.Push) asd.Engine.ChangeScene(new TalkScene(StageCode + 1, MapManager.Read(StageCode + 1)));
+            if (asd.Engine.Keyboard.GetKeyState(asd.Keys.X) == asd.KeyState.Push) asd.Engine.ChangeScene(new TitleScene());
         }
     }
 }

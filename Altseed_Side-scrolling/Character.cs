@@ -356,8 +356,8 @@ namespace Altseed_Side_scrolling
     {
         public int PositionX;
         public bool TurnLR;
-        
-        public FlyingEnemyTrigger(int x,bool turn)
+
+        public FlyingEnemyTrigger(int x, bool turn)
         {
             PositionX = x;
             TurnLR = turn;

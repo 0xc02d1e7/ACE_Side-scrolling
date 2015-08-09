@@ -11,6 +11,8 @@ namespace Altseed_Side_scrolling
     public static class Altseed_Side_scrolling_Core
     {
         public static String Title = "ブツを運ぶやつ";
+        public static int MapCount = 1;
+
         [STAThread]
         static void Main(string[] args)
         {
