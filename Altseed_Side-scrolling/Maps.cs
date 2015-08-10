@@ -40,7 +40,7 @@ namespace Altseed_Side_scrolling
             NumberStyles Hex = NumberStyles.AllowHexSpecifier;
             Encoding UTF8Encoder = Encoding.GetEncoding("UTF-8");
 
-asd.StaticFile reader = asd.Engine.File.CreateStaticFile("Maps/" + stagecode.ToString("X2") + ".xml");
+            asd.StaticFile reader = asd.Engine.File.CreateStaticFile("Maps/" + stagecode.ToString("X2") + ".xml");
             XmlDocument XmlDoc = new XmlDocument();
             System.Console.Write(UTF8Encoder.GetString(reader.Buffer));
             XmlDoc.LoadXml(UTF8Encoder.GetString(reader.Buffer));

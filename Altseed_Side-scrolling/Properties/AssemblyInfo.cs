@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ブツを運ぶやつ(仮)")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("筑波大学 AmusementCreators")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ブツを運ぶやつ(仮)")]
-[assembly: AssemblyCopyright("Copyright © wisteria 2015")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
