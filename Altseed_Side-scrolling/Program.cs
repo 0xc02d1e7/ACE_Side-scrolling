@@ -10,7 +10,7 @@ namespace Altseed_Side_scrolling
 
     public static class Altseed_Side_scrolling_Core
     {
-        public static String Title = "ブツを運ぶやつ";
+        public static String Title = "ブツを運ぶやつ(仮)";
         public static int MapCount = 1;
 
         [STAThread]

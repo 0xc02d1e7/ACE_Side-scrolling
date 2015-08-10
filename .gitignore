@@ -5,8 +5,9 @@
 *.[pP][nN][gG]
 *.[sS][uU][oO]
 /Altseed_Side-scrolling/Resources
-/Altseed_Side-scrolling/MusicSource
+/Altseed_Side-scrolling/Resources_src
 *.txt
 *.exe
-Altseed_Side-scrolling/FilePackageGenerator.GUI.exe.config
+*.config
 *.pack
+*.ico

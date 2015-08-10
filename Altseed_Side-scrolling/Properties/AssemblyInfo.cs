@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle("Altseed_Side_scrolling")]
+[assembly: AssemblyTitle("ブツを運ぶやつ(仮)")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Altseed_Side_scrolling")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("筑波大学 AmusementCreators")]
+[assembly: AssemblyProduct("ブツを運ぶやつ(仮)")]
+[assembly: AssemblyCopyright("Copyright © wisteria 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
